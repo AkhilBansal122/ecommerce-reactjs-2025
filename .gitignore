@@ -1,0 +1,7 @@
+/.phpunit.cache
+/admin/node_modules
+/admin/public/*
+/backend/public/*
+/backend/node_modules
+/public/storage
+/storage/*.key
