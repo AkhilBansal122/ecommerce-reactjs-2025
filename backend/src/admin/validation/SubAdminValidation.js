@@ -73,6 +73,18 @@ module.exports = {
         .messages({
           'any.required': 'Country ID is required.',
         }),
+        city_id: Joi.string()
+        .custom((value, helpers) => {
+          // Validate the country_id as a valid MongoDB ObjectId
+          if (!mongoose.Types.ObjectId.isValid(value)) {
+            return helpers.message('City ID must be a valid MongoDB ObjectId.');
+          }
+          return value;
+        })
+        .required()
+        .messages({
+          'any.required': 'City ID is required.',
+        }),
       password: Joi.string()
         .min(6) // Ensures password is at least 6 characters long
         .pattern(/^\S*$/) // Ensures password does not contain spaces
@@ -82,7 +94,7 @@ module.exports = {
           'string.pattern.base': 'Password must not contain spaces.',
           'any.required': 'Password is required.',
         }),
-      country_code: Joi.string()
+        country_code: Joi.string()
         .pattern(/^\d+$/) // Ensures only digits
         .required()
         .messages({

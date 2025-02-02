@@ -8,11 +8,11 @@ import Navbar from "../../widget/Navbar";
 import Footer from "../../widget/Footer";
 import { InputValid, EmailValid, CountryCodeValid, PhoneNoValid, PasswordValid } from "../../validations/InputValid";
 import { toast } from "react-toastify";
-import { permissionAdd, getPermission, permissionUpdate, permissionStatusChange } from "../../services/permission";
 import CustomDataTable from "../CustomDataTable";
 import { AuthContext } from "../../AuthContext";
 import { getActiveCountry, getActiveStateByCountryId, getActiveCityStateByCountryId } from "../../services/user";
 import { getActiveRole } from "../../services/role";
+import { subAdminAdd, getSubAdminList, subAdminStatusChange, subAdminUpdate } from "../../services/subadmin";
 
 
 export const SubAdmin = () => {
@@ -24,15 +24,15 @@ export const SubAdmin = () => {
     middle_name: "",
     last_name: "",
     email: "",
-    Password: "",
+    password: "",
     country_code: "",
     phone_no: "",
-    country: "",
-    state: "",
-    city: "",
-    role_id:""
+    country_id: "",
+    state_id: "",
+    city_id: "",
+    role_id: ""
   });
-  const [activeRoleList,setActiveRole] = useState([]);
+  const [activeRoleList, setActiveRole] = useState([]);
 
   const [dataErr, setDataErr] = useState({
     first_nameErr: "",
@@ -45,7 +45,7 @@ export const SubAdmin = () => {
     countryErr: "",
     stateErr: "",
     cityErr: "",
-    roleErr:"",
+    roleErr: "",
   });
 
   const [totalRows, setTotalRows] = useState(0);
@@ -64,7 +64,22 @@ export const SubAdmin = () => {
       key: "Sr No.",
     },
     {
-      key: "Name",
+      key: "Full Name",
+    },
+    {
+      key: "Email",
+    },
+    {
+      key: "Phone No",
+    },
+    {
+      key: "Country",
+    },
+    {
+      key: "State",
+    },
+    {
+      key: "City",
     },
     {
       key: "Action",
@@ -73,7 +88,7 @@ export const SubAdmin = () => {
 
   const handleShow = (record) => {
     if (record && record) {
-      setData({ ...data, first_name: record?.name });
+      setData({ first_name: record?.first_name, middle_name: record?.middle_name, last_name: record?.last_name, email: record?.email, country_id: record?.country_id, state_id: record?.state_id, city_id: record?.city_id, country_code: record?.country_code, phone_no: record?.phone_no, role_id: record?.role_id, password: record?.password });
       setId(record?._id);
     }
     setShow(true);
@@ -83,7 +98,7 @@ export const SubAdmin = () => {
     // setbonus("");
     // setBonusErr("");
     // setUsdt("");
-
+    setData({});
     setDataErr({});
     setShow(false);
   };
@@ -93,11 +108,11 @@ export const SubAdmin = () => {
     const newStatus = !item.isActive;
 
     // Update the status in the backend
-    permissionStatusChange({ id: item._id, isActive: newStatus })
+    subAdminStatusChange({ id: item._id, isActive: newStatus })
       .then(response => {
         // Update the UI or reload the data after the status change
-        toast.success(`${item.name} is now ${newStatus ? 'Active' : 'Inactive'}`);
-        getPermissionData(pageClick, perPage);
+        toast.success(`${item.first_name} is now ${newStatus ? 'Active' : 'Inactive'}`);
+        getSubAdminData(pageClick, perPage);
 
       })
       .catch(error => {
@@ -149,46 +164,45 @@ export const SubAdmin = () => {
       setDataErr({ ...data, phoneNoErr: err });
     }
     if (name === "country") {
-      setData({ ...data, country: value });
+      setData({ ...data, country_id: value });
       value.length === 0 ? setDataErr({ ...data, countryErr: "country field is required" }) : setDataErr({ ...data, countryErr: "" });
     }
     if (name === "state") {
-      setData({ ...data, state: value });
+      setData({ ...data, state_id: value });
       value.length === 0 ? setDataErr({ ...data, stateErr: "state field is required" }) : setDataErr({ ...data, stateErr: "" });
     }
     if (name === "city") {
-      setData({ ...data, city: value });
+      setData({ ...data, city_id: value });
       value.length === 0 ? setDataErr({ ...data, cityErr: "city field is required" }) : setDataErr({ ...data, cityErr: "" });
     }
-    if(name=='role_id'){
-      setData({...data,role_id:value});
+    if (name === 'role') {
+      console.log("role-->", value);
+
+      setData({ ...data, role_id: value });
       value.length === 0 ? setDataErr({ ...data, roleErr: "Please select role is required" }) : setDataErr({ ...data, roleErr: "" });
 
     }
   };
   // Country, state, city data
 
-  const [cities, setCities] = useState([]);
   // Handle country change
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
-    setData({ ...data, country: selectedCountry, state: "", city: "" });
-    setCities([]);
+    setData({ ...data, country_id: selectedCountry, state_id: "", city_id: "" });
     setCItyStatesByCountryList([]);
   };
 
   // Handle state change
   const handleStateChange = (e) => {
     const selectedState = e.target.value;
-    setData({ ...data, state: selectedState, city: "" });
+    setData({ ...data, state_id: selectedState, city_id: "" });
     setCItyStatesByCountryList([]);
-    //setCities(citiesByState[selectedState] || []);
   };
 
   // Handle city change
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
-    setData({ ...data, city: selectedCity });
+    setData({ ...data, city_id: selectedCity });
   };
   const validateOnSubmit = () => {
     const errors = {};
@@ -196,10 +210,12 @@ export const SubAdmin = () => {
     if (!data.first_name) errors.first_nameErr = 'First name is required';
     if (!data.last_name) errors.last_nameErr = 'Last name is required';
     if (!data.email) errors.emailErr = 'Email is required';
-    if (!data.password) errors.passwordErr = 'Password is required';
-    if (!data.country) errors.countryErr = 'Country is required';
-    if (!data.state) errors.stateErr = 'State is required';
-    if (!data.city) errors.cityErr = 'City is required';
+    if (id.length === 0) {
+      if (!data.password) errors.passwordErr = 'Password is required';
+    }
+    if (!data.country_id) errors.countryErr = 'Country is required';
+    if (!data.state_id) errors.stateErr = 'State is required';
+    if (!data.city_id) errors.cityErr = 'City is required';
     if (!data.country_code) errors.countryCodeErr = 'Country Code is required';
     if (!data.phone_no) errors.phoneNoErr = 'Phone number is required';
     if (!data.role_id) errors.roleErr = 'Select role is required';
@@ -212,24 +228,55 @@ export const SubAdmin = () => {
   const onSubmit = async () => {
     if (validateOnSubmit()) {
       // Submit your form data
-      console.log('Form submitted successfully!', data);
-    } else {
+      //
+      const config = localStorage.getItem("jwtToken");
+      if(id.length > 0){
+        data.id = id;
+        delete data.password;
+      }
+      const result =  id.length ===0 ?  await subAdminAdd(data, config) : await subAdminUpdate(data,config);  
+      if (result !== null && result.status === true) {
+        toast.dismiss();
+        toast.success(result.message);
+        setShow(false);
+        setId('');
+         setData({
+          first_name: "",
+          middle_name: "",
+          last_name: "",
+          email: "",
+          password: "",
+          country_code: "",
+          phone_no: "",
+          country_id: "",
+          state_id: "",
+          city_id: "",
+          role_id: ""
+        });
+        setDataErr({});
+      } else {
+        toast.dismiss();
+        toast.error(result.message);
+      }
+    }
+
+    else {
       console.log('Validation failed, please correct the errors.');
     }
   };
 
   useEffect(() => {
-    getPermissionData(pageClick, perPage);
+    getSubAdminData(pageClick, perPage);
     activeCountry();
     activeRole();
-    if (data.country && data.country.length !== 0) {
-      activeStateByCountryId(data.country);
+    if (data.country_id && data.country_id.length !== 0) {
+      activeStateByCountryId(data.country_id);
     }
-    if (data.state && data.state.length !== 0) {
-      activeCityStateByCountryId(data.country, data.state);
+    if (data.state_id && data.state_id.length !== 0) {
+      activeCityStateByCountryId(data.country_id, data.state_id);
     }
 
-  }, [pageClick, perPage, data.country, data.state]);
+  }, [pageClick, perPage, data.country, data.state_id]);
 
   const activeCountry = async () => {
     const response = await getActiveCountry();
@@ -242,16 +289,16 @@ export const SubAdmin = () => {
       }));
       setCountryCodeList(response.data.map((element) => {
         return {
-          code: element._id,
-          name: element.dial_code
+          code: element.dial_code,
+          name: `${element.dial_code} (${element.name})`
         }
       }));
     }
   }
-  const activeRole = async ()=>{
-    const responseActiveRole =await getActiveRole();
-    if(responseActiveRole.status){
-      setActiveRole(responseActiveRole.data.map((element)=>{
+  const activeRole = async () => {
+    const responseActiveRole = await getActiveRole();
+    if (responseActiveRole.status) {
+      setActiveRole(responseActiveRole.data.map((element) => {
         return {
           id: element._id,
           name: element.name
@@ -279,7 +326,7 @@ export const SubAdmin = () => {
     const response = await getActiveCityStateByCountryId(country_id, state_id);
     if (response.status === true) {
       setCItyStatesByCountryList(response.data.map((element) => {
-        return {id: element._id,name: element.name}
+        return { id: element._id, name: element.name }
       }));
     }
     else {
@@ -287,10 +334,10 @@ export const SubAdmin = () => {
     }
   }
 
-  const getPermissionData = async (pageClick, perPage) => {
+  const getSubAdminData = async (pageClick, perPage) => {
     try {
       const config = localStorage.getItem("jwtToken");
-      const result = await getPermission({ page: pageClick, limit: perPage }, config);
+      const result = await getSubAdminList({ page: pageClick, limit: perPage }, config);
       if (result?.status) {
         const pagination = result.pagination;
         setPerPage(perPage);
@@ -298,7 +345,12 @@ export const SubAdmin = () => {
         if (result?.data.length > 0) {
           const records = result.data.map((item, index) => ({
             sr: index + 1,
-            name: item.name,
+            name: `${item.first_name} ${item.middle_name} ${item.last_name}`,
+            email: `${item.email}`,
+            phone_no: `${item.country_code} ${item.phone_no}`,
+            country: `${item.country_id}`,
+            state: `${item.state_id}`,
+            city: `${item.city_id}`,
             action: [<button
               onClick={() => handleShow(item)}  // Function to handle edit action
               className="btn btn-primary">Edit</button>,
@@ -345,7 +397,7 @@ export const SubAdmin = () => {
               </div>
               <button
                 className="btn btn-primary mb-3"
-                onClick={() => { handleShow(); setData({}); setDataErr({}); }
+                onClick={() => { handleShow(); setId(''); setData({}); setDataErr({}); }
                 }
                 title="Add/Update"
               >
@@ -377,7 +429,7 @@ export const SubAdmin = () => {
                       <Form.Label>Middle Name</Form.Label>
                       <Form.Control
                         name="middle_name"
-                        onChange={handlechange}x    
+                        onChange={handlechange} x
                         type="text"
                         value={data.middle_name}
                       />
@@ -398,29 +450,29 @@ export const SubAdmin = () => {
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInputPhone">
-                    <Form.Label>Select Role</Form.Label>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Form.Select
-                        name="role_id"
-                        onChange={handlechange}
-                        value={data.role_id}
-                        style={{ maxWidth: '100px', marginRight: '10px' }} // Set a fixed width for the dropdown
-                      >
-                        <option value="">Select</option>
-                        {
-                          activeRoleList && activeRoleList.map((element) => {
-                            return (
-                              <option key={element._id} value={element.name}>
-                                {element.name}
-                              </option>
-                            );
-                          })
-                        }
-                      </Form.Select>
-                    </div>
-                    <span style={{ color: "red" }}>{dataErr.roleErr}</span>
-                  </Form.Group>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInputPhone">
+                      <Form.Label>Select Role</Form.Label>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Form.Select
+                          name="role"
+                          onChange={handlechange}
+                          value={data.role_id}
+                          style={{ maxWidth: '100px', marginRight: '10px' }} // Set a fixed width for the dropdown
+                        >
+                          <option value="">Select</option>
+                          {
+                            activeRoleList && activeRoleList.map((element) => {
+                              return (
+                                <option key={element.id} value={element.id}>
+                                  {element.name}
+                                </option>
+                              );
+                            })
+                          }
+                        </Form.Select>
+                      </div>
+                      <span style={{ color: "red" }}>{dataErr.roleErr}</span>
+                    </Form.Group>
                     {/* Email Field */}
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2" style={{ flex: '1' }}>
                       <Form.Label>Email</Form.Label>
@@ -430,36 +482,41 @@ export const SubAdmin = () => {
                         type="email"
                         value={data.email}
                       />
-                      <span style={{  color: "red" }}>{dataErr.emailErr}</span>
+                      <span style={{ color: "red" }}>{dataErr.emailErr}</span>
                     </Form.Group>
 
                     {/* Password Field */}
-                    <Form.Group className="mb-3" controlId="formPassword" style={{ flex: '1' }}>
-                      <Form.Label>Password</Form.Label>
-                      <div style={{ position: "relative" }}>
-                        <Form.Control
-                          name="password"
-                          onChange={handlechange}
-                          type={showPassword ? "text" : "password"}
-                          value={data.password}
-                        />
-                        <span
-                          onClick={togglePasswordVisibility}
-                          style={{
-                            position: "absolute",
-                            right: "10px",
-                            top: "50%",
-                            transform: "translateY(-50%)",
-                            cursor: "pointer",
-                          }}
-                        >
-                          {/* You can add an eye icon here if needed */}
-                        </span>
-                      </div>
-                      <span style={{ color: "red" }}>{dataErr.passwordErr}</span>
-                    </Form.Group>
-                    
-                   
+
+                    {id.length === 0 && (
+                      <Form.Group className="mb-3" controlId="formPassword" style={{ flex: '1' }}>
+                        <Form.Label>Password</Form.Label>
+                        <div style={{ position: "relative" }}>
+                          <Form.Control
+                            name="password"
+                            onChange={handlechange}
+                            type={showPassword ? "text" : "password"}
+                            value={data.password}
+                          />
+                          <span
+                            onClick={togglePasswordVisibility}
+                            style={{
+                              position: "absolute",
+                              right: "10px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {/* You can add an eye icon here if needed */}
+                          </span>
+                        </div>
+                        <span style={{ color: "red" }}>{dataErr.passwordErr}</span>
+                      </Form.Group>
+                    )}
+
+
+
+
                   </div>
 
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInputPhone">
@@ -475,7 +532,7 @@ export const SubAdmin = () => {
                         {
                           countrycode && countrycode.map((element) => {
                             return (
-                              <option key={element.code} value={element.code}>
+                              <option key={element.dial_code} value={element.code}>
                                 {element.name}
                               </option>
                             );
@@ -492,7 +549,7 @@ export const SubAdmin = () => {
                       />
                     </div>
                     <span style={{ color: "red", marginLeft: "" }}>{dataErr.countryCodeErr}</span>
-                    <span style={{ color: "red",float:'right' }}>{dataErr.phoneNoErr}</span>
+                    <span style={{ color: "red", float: 'right' }}>{dataErr.phoneNoErr}</span>
                   </Form.Group>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
                     <Form.Group className="mb-3" style={{ flex: '1' }}>
@@ -500,7 +557,7 @@ export const SubAdmin = () => {
                       <Form.Select
                         name="country"
                         onChange={handleCountryChange}
-                        value={data.country}
+                        value={data.country_id}
                       >
                         <option value="">Select Country</option>
                         {countriesList.map((country) => (
@@ -519,8 +576,8 @@ export const SubAdmin = () => {
                       <Form.Select
                         name="state"
                         onChange={handleStateChange}
-                        value={data.state}
-                        disabled={!data.country}
+                        value={data.state_id}
+                        disabled={!data.country_id}
                       >
                         <option value="">Select State</option>
                         {statesByCountryList.map((state) => (
@@ -537,8 +594,8 @@ export const SubAdmin = () => {
                       <Form.Select
                         name="city"
                         onChange={handleCityChange}
-                        value={data.city}
-                        disabled={!data.state}
+                        value={data.city_id}
+                        disabled={!data.state_id}
                       >
                         <option value="">Select City</option>
                         {cityStatesByCountryList.map((city) => (

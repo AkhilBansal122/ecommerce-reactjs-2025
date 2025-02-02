@@ -37,6 +37,7 @@ const getPermission = async (data) => {
     }
   }
 }
+
 const permissionStatusChange = async (data) => {
   try {
     const jwtToken = localStorage.getItem("jwtToken");

@@ -35,6 +35,7 @@ router.get("/active-role",adminverifyToken,roleController.activeRole);
 router.post("/subadmin-create",adminverifyToken,subAdminCreateValidation,subAdminController.create);
 router.post("/subadmin-list",adminverifyToken,listsubAdmineValidation,subAdminController.list);
 router.put("/subadmin-update",adminverifyToken,subAdminUpdateValidation,subAdminController.update);
+router.put("/subadmin-statusChange",adminverifyToken,subAdminController.statusChange);
 
 
 //Country 
