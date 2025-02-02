@@ -28,6 +28,9 @@ module.exports = {
             if (!isMatch) {
                 return failedResponse(res, "Invalid password", null);
             }
+            if(user.isActive == false){
+                return failedResponse(res, "Block Your Account Please Contact Support Team", null);
+            }
             // Fetch the rolePermission entries for the user's role_id
             const rolePermissions = await RolePermissionModel.find({ role_id: user.role_id });
             if (!rolePermissions.length) {

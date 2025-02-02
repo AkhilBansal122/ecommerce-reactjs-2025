@@ -35,6 +35,22 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    country_id: {
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Countries', // Assuming you have a Country model in your system
+
+    },
+    state_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'States', // Assuming you have a Country model in your system
+        required: true
+    },
+    city_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cities', // Assuming you have a Country model in your system
+        required: true
+    },
     otp: {
         type: Number,
         default: 0

@@ -6,7 +6,7 @@ import { BaseUrl } from "../Constent/baseUrl";
 const subAdminAdd = async (data) => {
   try {
     const jwtToken = localStorage.getItem("jwtToken");
-    let result = await opsService.postdata(BaseUrl + "/permission-create", data, jwtToken);
+    let result = await opsService.postdata(BaseUrl + "/subadmin-create", data, jwtToken);
     return result;
 
   } catch (error) {
@@ -19,7 +19,7 @@ const subAdminAdd = async (data) => {
 const subAdminUpdate = async (data) => {
   try {
     const jwtToken = localStorage.getItem("jwtToken");
-    let result = await opsService.putData(BaseUrl + "/permission-update", data, jwtToken);
+    let result = await opsService.putData(BaseUrl + "/subadmin-update", data, jwtToken);
     return result;
   } catch (error) {
     if (error.response.status) {
@@ -27,10 +27,10 @@ const subAdminUpdate = async (data) => {
     }
   }
 }
-const getPermission = async (data) => {
+const getSubAdminList = async (data) => {
   try {
     const jwtToken = localStorage.getItem("jwtToken");
-    let result = await opsService.postdata(BaseUrl + "/permission-list", data, jwtToken);
+    let result = await opsService.postdata(BaseUrl + "/subadmin-list", data, jwtToken);
     return result;
   } catch (error) {
     if (error.response.status) {
@@ -41,7 +41,7 @@ const getPermission = async (data) => {
 const subAdminStatusChange = async (data) => {
   try {
     const jwtToken = localStorage.getItem("jwtToken");
-    let result = await opsService.putData(BaseUrl + "/permission-statusChange", data, jwtToken);
+    let result = await opsService.putData(BaseUrl + "/subadmin-statusChange", data, jwtToken);
     return result;
   } catch (error) {
     if (error.response.status) {
@@ -50,5 +50,5 @@ const subAdminStatusChange = async (data) => {
   }
 }
 export {
-  subAdminAdd, getPermission, subAdminUpdate,subAdminStatusChange
+  subAdminAdd, getSubAdminList, subAdminUpdate,subAdminStatusChange
 }
