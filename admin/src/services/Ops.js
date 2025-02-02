@@ -17,7 +17,7 @@ const postdata = async (url = "", data, token = false) => {
     }
   });  return response.data;
   } catch (error) {
-
+    console.log("erroe->",error);
     if(error.response.status==0){
       window.location.href= "/";
     }
@@ -44,7 +44,11 @@ const getData = async (url = "", token = false) => {
     return false;  
   }
  } catch (error) {
-  console.log("error-->",error.response.data);
+  if(error.message==='Network Error'){
+    localStorage.clear();
+    window.location.href="/";
+
+  }
   if(error.response.status === 400){
     toast.dismiss();
     toast.error(error.response.data.message);

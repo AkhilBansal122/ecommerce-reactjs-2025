@@ -12,6 +12,8 @@ import { permissionAdd, getPermission, permissionUpdate, permissionStatusChange 
 import CustomDataTable from "../CustomDataTable";
 import { AuthContext } from "../../AuthContext";
 import { getActiveCountry, getActiveStateByCountryId, getActiveCityStateByCountryId } from "../../services/user";
+import { getActiveRole } from "../../services/role";
+
 
 export const SubAdmin = () => {
 
@@ -27,8 +29,11 @@ export const SubAdmin = () => {
     phone_no: "",
     country: "",
     state: "",
-    city: ""
+    city: "",
+    role_id:""
   });
+  const [activeRoleList,setActiveRole] = useState([]);
+
   const [dataErr, setDataErr] = useState({
     first_nameErr: "",
     middle_nameErr: "",
@@ -40,6 +45,7 @@ export const SubAdmin = () => {
     countryErr: "",
     stateErr: "",
     cityErr: "",
+    roleErr:"",
   });
 
   const [totalRows, setTotalRows] = useState(0);
@@ -154,6 +160,11 @@ export const SubAdmin = () => {
       setData({ ...data, city: value });
       value.length === 0 ? setDataErr({ ...data, cityErr: "city field is required" }) : setDataErr({ ...data, cityErr: "" });
     }
+    if(name=='role_id'){
+      setData({...data,role_id:value});
+      value.length === 0 ? setDataErr({ ...data, roleErr: "Please select role is required" }) : setDataErr({ ...data, roleErr: "" });
+
+    }
   };
   // Country, state, city data
 
@@ -191,6 +202,7 @@ export const SubAdmin = () => {
     if (!data.city) errors.cityErr = 'City is required';
     if (!data.country_code) errors.countryCodeErr = 'Country Code is required';
     if (!data.phone_no) errors.phoneNoErr = 'Phone number is required';
+    if (!data.role_id) errors.roleErr = 'Select role is required';
 
     setDataErr(errors);
 
@@ -209,6 +221,7 @@ export const SubAdmin = () => {
   useEffect(() => {
     getPermissionData(pageClick, perPage);
     activeCountry();
+    activeRole();
     if (data.country && data.country.length !== 0) {
       activeStateByCountryId(data.country);
     }
@@ -233,6 +246,17 @@ export const SubAdmin = () => {
           name: element.dial_code
         }
       }));
+    }
+  }
+  const activeRole = async ()=>{
+    const responseActiveRole =await getActiveRole();
+    if(responseActiveRole.status){
+      setActiveRole(responseActiveRole.data.map((element)=>{
+        return {
+          id: element._id,
+          name: element.name
+        }
+      }))
     }
   }
   const activeStateByCountryId = async (country_id) => {
@@ -333,7 +357,6 @@ export const SubAdmin = () => {
               <Modal.Header closeButton>
                 <Modal.Title style={{ color: "black" }}></Modal.Title>
               </Modal.Header>
-
               <Modal.Body>
                 <Form>
                   <div style={{ display: 'flex', gap: '10px' }}>
@@ -375,6 +398,29 @@ export const SubAdmin = () => {
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInputPhone">
+                    <Form.Label>Select Role</Form.Label>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Form.Select
+                        name="role_id"
+                        onChange={handlechange}
+                        value={data.role_id}
+                        style={{ maxWidth: '100px', marginRight: '10px' }} // Set a fixed width for the dropdown
+                      >
+                        <option value="">Select</option>
+                        {
+                          activeRoleList && activeRoleList.map((element) => {
+                            return (
+                              <option key={element._id} value={element.name}>
+                                {element.name}
+                              </option>
+                            );
+                          })
+                        }
+                      </Form.Select>
+                    </div>
+                    <span style={{ color: "red" }}>{dataErr.roleErr}</span>
+                  </Form.Group>
                     {/* Email Field */}
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2" style={{ flex: '1' }}>
                       <Form.Label>Email</Form.Label>
@@ -384,7 +430,7 @@ export const SubAdmin = () => {
                         type="email"
                         value={data.email}
                       />
-                      <span style={{ color: "red" }}>{dataErr.emailErr}</span>
+                      <span style={{  color: "red" }}>{dataErr.emailErr}</span>
                     </Form.Group>
 
                     {/* Password Field */}
@@ -412,6 +458,8 @@ export const SubAdmin = () => {
                       </div>
                       <span style={{ color: "red" }}>{dataErr.passwordErr}</span>
                     </Form.Group>
+                    
+                   
                   </div>
 
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInputPhone">
@@ -443,8 +491,8 @@ export const SubAdmin = () => {
                         placeholder="Enter phone number"
                       />
                     </div>
-                    <span style={{ color: "red", marginLeft: "23px" }}>{dataErr.countryCodeErr}</span>
-                    <span style={{ color: "red" }}>{dataErr.phoneNoErr}</span>
+                    <span style={{ color: "red", marginLeft: "" }}>{dataErr.countryCodeErr}</span>
+                    <span style={{ color: "red",float:'right' }}>{dataErr.phoneNoErr}</span>
                   </Form.Group>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
                     <Form.Group className="mb-3" style={{ flex: '1' }}>

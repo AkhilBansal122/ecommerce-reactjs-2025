@@ -3,5 +3,26 @@
 /admin/public/*
 /backend/public/*
 /backend/node_modules
-/public/storage
-/storage/*.key
+/website/node_modules
+/website/public/storage
+/website/storage/*.key
+/website/.pnp
+/website.pnp.js
+
+# testing
+/website/coverage
+
+# production
+/website/build
+
+# misc
+/website/.DS_Store
+/website/.env.local
+/website/.env.development.local
+/website/.env.test.local
+/website/.env.production.local
+
+/website/npm-debug.log*
+/website/yarn-debug.log*
+/website/yarn-error.log*
+
