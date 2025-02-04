@@ -8,17 +8,17 @@ module.exports = {
         try {
             const { name } = req.body;
 
-            // Check if permission already exists
-            const permission = await CategoryModel.findOne({ name: name });
-            if (permission) {
+            // Check if category already exists
+            const category = await CategoryModel.findOne({ name: name });
+            if (category) {
                 return alreadyExistsResponse(res, "Category already exists.");
             }
 
-            // Create a new permission
-            const createPermission = await CategoryModel.create({ name });
+            // Create a new category
+            const createcategory = await CategoryModel.create({ name });
 
             // Return success response
-            return successResponse(res, "Category created successfully.", createPermission);
+            return successResponse(res, "Category created successfully.", createcategory);
         } catch (error) {
             return serverErrorResponse(res, "Internal Server Error", error.message);
         }
@@ -54,16 +54,16 @@ module.exports = {
         try {
             const { id } = req.body; // Assuming the ID is passed in the request body
 
-            // Validate if the permission exists
+            // Validate if the category exists
             const category = await CategoryModel.findById(id);
             if (!category) {
                 return noRecordFoundResponse(res, "category not found.");
             }
-            // Delete the permission
+            // Delete the category
             await CategoryModel.findByIdAndDelete(id);
 
             // Return success response
-            return successResponse(res, "Permission deleted successfully.");
+            return successResponse(res, "Category deleted successfully.");
         } catch (error) {
             return serverErrorResponse(res, "Internal Server Error", error.message);
         }
@@ -85,7 +85,7 @@ module.exports = {
             // Return success response with pagination info
             return res.status(200).json({
                 status:true,
-                message:"fetch Permission Successfully",
+                message:"fetch Category Successfully",
                 data: Cateogry,
                 pagination: {
                     page,
