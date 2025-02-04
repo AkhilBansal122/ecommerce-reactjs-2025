@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 
-import { BaseUrl } from "./Constent/baseUrl";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +13,8 @@ import { ManualEntry } from "./components/ManualEntry";
 import {RoleList}  from "./components/role/RoleList";
 import {Permission} from "./components/permission/PermissionList";
 import {SubAdmin} from "./components/subadmin/SubAdminList";
+import { Category } from "./components/category/CategoryList";
+
 function App(props) {
   const { login } = useAuth();
 
@@ -56,7 +57,7 @@ function App(props) {
           />
                   <Route 
           path="/categories-management"
-          element={<ProtectedRoute component={<Dashboard />} />}
+          element={<ProtectedRoute component={<Category />} />}
           />
                 <Route 
           path="/sub-categories-management"
