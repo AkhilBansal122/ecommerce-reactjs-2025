@@ -2,12 +2,14 @@ const express = require("express");
 const {adminverifyToken } = require("../../../middleware/authmiddleware");
 const userController = require("../controllers/userController");
 const permissionController = require("../controllers/permissionController");
+const categoryController = require("../controllers/categoryController");
 const roleController = require("../controllers/roleController");
 const subAdminController = require("../controllers/subAdminController");
 const { loginValidation,changePasswordValidation } = require("../validation/authValidation");
 const {createPermissionValidation,updatePermissionValidation,deletePermissionValidation,listPermissionValidation} = require("../validation/permissionValidation");
 const {createRoleValidation,updateRoleValidation,deleteRoleValidation,listRoleValidation} = require("../validation/roleValidation");
 const { subAdminCreateValidation,listsubAdmineValidation,subAdminUpdateValidation } = require("../validation/SubAdminValidation");
+const {createCategoryValidation,updateCategoryValidation,listCategoryValidation,statusChanngeCategoryValidation} = require("../validation/categoryValidation");
 
 const router = express.Router();
 
@@ -47,4 +49,10 @@ router.get("/active-city/:country_id/:state_id", adminverifyToken, userControlle
 
 router.post('/logout', adminverifyToken,userController.logout);
 
+//Caregory management
+router.post("/category-create",adminverifyToken,createCategoryValidation,categoryController.create);
+router.put("/category-update",adminverifyToken,updateCategoryValidation,categoryController.update);
+router.post("/category-list",adminverifyToken,listCategoryValidation,categoryController.list);
+router.get("/active-category",adminverifyToken,categoryController.activeCategory);
+router.put("/category-statusChange",adminverifyToken,statusChanngeCategoryValidation,categoryController.statusChangecategory);
 module.exports = router;
