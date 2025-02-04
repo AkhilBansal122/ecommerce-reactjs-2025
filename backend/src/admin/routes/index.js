@@ -3,7 +3,6 @@ const {adminverifyToken } = require("../../../middleware/authmiddleware");
 const userController = require("../controllers/userController");
 const permissionController = require("../controllers/permissionController");
 const categoryController = require("../controllers/categoryController");
-
 const roleController = require("../controllers/roleController");
 const subAdminController = require("../controllers/subAdminController");
 const { loginValidation,changePasswordValidation } = require("../validation/authValidation");
@@ -53,11 +52,11 @@ router.get("/active-city/:country_id/:state_id", adminverifyToken, userControlle
 
 router.post('/logout', adminverifyToken,userController.logout);
 
-//Category management
+
+//Caregory management
 router.post("/category-create",adminverifyToken,createCategoryValidation,categoryController.create);
 router.put("/category-update",adminverifyToken,updateCategoryValidation,categoryController.update);
 router.post("/category-list",adminverifyToken,listCategoryValidation,categoryController.list);
 router.get("/active-category",adminverifyToken,categoryController.activeCategory);
 router.put("/category-statusChange",adminverifyToken,statusChanngeCategoryValidation,categoryController.statusChangeCategory);
-
 module.exports = router;
