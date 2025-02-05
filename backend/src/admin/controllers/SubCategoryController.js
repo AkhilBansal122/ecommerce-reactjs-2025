@@ -1,69 +1,52 @@
 const express = require("express");
-const { successResponse, failedResponse, noRecordFoundResponse, serverErrorResponse, alreadyExistsResponse } = require("../../../Helper/helper");
+const { successResponse, alreadyExistsResponse, noRecordFoundResponse, serverErrorResponse } = require("../../../Helper/helper");
+const SubCategoryModel = require("../../../Schema/SubCategorySchema");
 require('dotenv').config();
-const CategoryModel = require("../../../Schema/CategorySchema");
-module.exports = {
 
+module.exports = {
     create: async (req, res) => {
         try {
-            const { name } = req.body;
+            const { name,category_id } = req.body;
 
             // Check if category already exists
-            const category = await CategoryModel.findOne({ name: name });
+            const category = await SubCategoryModel.findOne({ name: name,category_id });
             if (category) {
-                return alreadyExistsResponse(res, "Category already exists.");
+                return alreadyExistsResponse(res, "Sub Category already exists.");
             }
 
             // Create a new category
-            const createcategory = await CategoryModel.create({ name });
+            const subcreatecategory = await SubCategoryModel.create({ name,category_id });
 
             // Return success response
-            return successResponse(res, "Category created successfully.", createcategory);
+            return successResponse(res, "Sub Category created successfully.", subcreatecategory);
         } catch (error) {
             return serverErrorResponse(res, "Internal Server Error", error.message);
         }
     },
     update: async (req, res) => {
         try {
-            const { id, name,isActive } = req.body;
+            const { id, name,category_id,isActive } = req.body;
 
             // Ensure the ID is valid (optional: you can add validation using Joi before this)
-            const category = await CategoryModel.findOne({ _id: id });
+            const category = await SubCategoryModel.findOne({ _id: id });
             if (!category) {
-                return noRecordFoundResponse(res, "Cateogry not found.");
+                return noRecordFoundResponse(res, "Sub Cateogry not found.");
             }
 
             // Check if the new category name already exists (excluding the current category)
-            const existingCategory = await CategoryModel.findOne({ name: name });
+            const existingCategory = await SubCategoryModel.findOne({ name: name,category_id });
             if (existingCategory && existingCategory._id.toString() !== id) {
-                return alreadyExistsResponse(res, "Category with this name already exists.");
+                return alreadyExistsResponse(res, "Sub Category with this name already exists.");
             }
 
             // Update the category's name
             category.name = name;
+            category.category_id = category_id;
             category.isActive=isActive;
             await category.save();
 
             // Return success response
-            return successResponse(res, "Category updated successfully.", category);
-        } catch (error) {
-            return serverErrorResponse(res, "Internal Server Error", error.message);
-        }
-    },
-    delete: async (req, res) => {
-        try {
-            const { id } = req.body; // Assuming the ID is passed in the request body
-
-            // Validate if the category exists
-            const category = await CategoryModel.findById(id);
-            if (!category) {
-                return noRecordFoundResponse(res, "category not found.");
-            }
-            // Delete the category
-            await CategoryModel.findByIdAndDelete(id);
-
-            // Return success response
-            return successResponse(res, "Category deleted successfully.");
+            return successResponse(res, "Sub Category updated successfully.", category);
         } catch (error) {
             return serverErrorResponse(res, "Internal Server Error", error.message);
         }
@@ -74,18 +57,18 @@ module.exports = {
             const limit = parseInt(req.body.limit) || 10;  // Default to 10 if limit is not provided
 
             // Fetch the paginated results and exclude the __v field
-            const Cateogry = await CategoryModel.find()
+            const Cateogry = await SubCategoryModel.find()
                 .skip((page - 1) * limit) // Skip based on the page and limit
                 .limit(limit) // Limit the number of results per page
                 .select('-__v'); // Exclude the __v field
 
             // Count the total number of documents for pagination info
-            const totalCateogry = await CategoryModel.countDocuments();
+            const totalCateogry = await SubCategoryModel.countDocuments();
 
             // Return success response with pagination info
             return res.status(200).json({
                 status:true,
-                message:"fetch Category Successfully",
+                message:"fetch sub Category Successfully",
                 data: Cateogry,
                 pagination: {
                     page,
@@ -98,15 +81,15 @@ module.exports = {
             return res.status(500).json({ message: 'Internal Server Error', error: error.message });
         }
     },
-    activeCategory:async (req, res) => {
+    activeSubCategory:async (req, res) => {
         try {
             // Fetch the paginated results and exclude the __v field
-            const category = await CategoryModel.find({isActive:true})
+            const category = await SubCategoryModel.find({isActive:true})
                 .select('-__v'); // Exclude the __v field
 
             // Count the total number of documents for pagination info
         if(category){
-            successResponse(res,"Active Permisson Fetch",category);
+            successResponse(res,"Active Sub Category Fetch",category);
         }
         else{
             noRecordFoundResponse(res,"No Record Found",[]);
@@ -116,21 +99,21 @@ module.exports = {
             return res.status(500).json({ message: 'Internal Server Error', error: error.message });
         }
     },
-    statusChangeCategory :async (req, res) => {
+    statusChangeSubCategory :async (req, res) => {
         try {
             const { id, isActive } = req.body;
 
             // Ensure the ID is valid (optional: you can add validation using Joi before this)
-            const category = await CategoryModel.findOne({ _id: id });
+            const category = await SubCategoryModel.findOne({ _id: id });
             if (!category) {
-                return noRecordFoundResponse(res, "Category not found.");
+                return noRecordFoundResponse(res, "Sub Category not found.");
             }
             // Update the Category's name
             category.isActive=isActive ;
             await category.save();
 
             // Return success response
-            return successResponse(res, "Category Status Change successfully.", []);
+            return successResponse(res, "Sub Category Status Change successfully.", []);
         } catch (error) {
             return serverErrorResponse(res, "Internal Server Error", error.message);
         }

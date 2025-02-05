@@ -1,5 +1,4 @@
 import * as opsService from "./Ops";
-
 import { BaseUrl } from "../Constent/baseUrl";
 
 const categoryAdd = async (data) => {
@@ -15,6 +14,7 @@ const categoryAdd = async (data) => {
 
   }
 }
+
 const categoryUpdate = async (data) => {
   try {
     const jwtToken = localStorage.getItem("jwtToken");
@@ -26,6 +26,7 @@ const categoryUpdate = async (data) => {
     }
   }
 }
+
 const getCategory = async (data) => {
   try {
     const jwtToken = localStorage.getItem("jwtToken");
@@ -49,6 +50,10 @@ const categoryStatusChange = async (data) => {
     }
   }
 }
-export {
-  categoryAdd, getCategory, categoryUpdate,categoryStatusChange
+
+export { 
+  categoryAdd,
+  getCategory,
+  categoryUpdate,
+  categoryStatusChange 
 }
