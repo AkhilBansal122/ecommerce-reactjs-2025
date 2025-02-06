@@ -348,9 +348,9 @@ export const SubAdmin = () => {
             name: `${item.first_name} ${item.middle_name} ${item.last_name}`,
             email: `${item.email}`,
             phone_no: `${item.country_code} ${item.phone_no}`,
-            country: `${item.country_id}`,
-            state: `${item.state_id}`,
-            city: `${item.city_id}`,
+            country: `${item?.countryDetails?.name ||'N/A'}`,
+            state: `${item?.stateDetails?.name ||'N/A'}`,
+            city: `${item?.cityDetails?.name || 'N/A'}`,
             action: [<button
               onClick={() => handleShow(item)}  // Function to handle edit action
               className="btn btn-primary">Edit</button>,

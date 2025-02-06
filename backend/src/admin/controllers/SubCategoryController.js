@@ -58,7 +58,12 @@ module.exports = {
 
             // Fetch the paginated results and exclude the __v field
             const Cateogry = await SubCategoryModel.find()
-                .skip((page - 1) * limit) // Skip based on the page and limit
+            .populate({
+                path: 'category_id',
+                 // Assuming 'category' is the field in SubCategoryModel that references the Category model
+                select: 'name' // Optionally, you can specify which fields to include from the Category model (e.g., 'name')
+              })  
+            .skip((page - 1) * limit) // Skip based on the page and limit
                 .limit(limit) // Limit the number of results per page
                 .select('-__v'); // Exclude the __v field
 

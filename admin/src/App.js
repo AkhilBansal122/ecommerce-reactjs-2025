@@ -14,6 +14,7 @@ import {RoleList}  from "./components/role/RoleList";
 import {Permission} from "./components/permission/PermissionList";
 import {SubAdmin} from "./components/subadmin/SubAdminList";
 import { Category } from "./components/category/CategoryList";
+import { SubCategory } from "./components/subcategory/SubCategoryList";
 
 function App(props) {
   const { login } = useAuth();
@@ -61,7 +62,7 @@ function App(props) {
           />
                 <Route 
           path="/sub-categories-management"
-          element={<ProtectedRoute component={<Dashboard />} />}
+          element={<ProtectedRoute component={<SubCategory />} />}
           />
           <Route
             path="/manual-entry-history"
