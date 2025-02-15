@@ -8,6 +8,11 @@ const CategorySchema = new mongoose.Schema({
         unique: true,
         trim: true // Ensures no leading/trailing spaces in the name
     },
+    slug: {
+        type: String,
+        unique: true,
+        trim: true // Ensures no leading/trailing spaces in the name
+    },
     isActive: {
         type: Boolean,
         default: true // Default to true if not provided

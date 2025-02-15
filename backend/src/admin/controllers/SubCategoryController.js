@@ -1,5 +1,5 @@
 const express = require("express");
-const { successResponse, alreadyExistsResponse, noRecordFoundResponse, serverErrorResponse } = require("../../../Helper/helper");
+const { successResponse, alreadyExistsResponse, noRecordFoundResponse, serverErrorResponse,generateSlug } = require("../../../Helper/helper");
 const SubCategoryModel = require("../../../Schema/SubCategorySchema");
 require('dotenv').config();
 
@@ -13,9 +13,9 @@ module.exports = {
             if (category) {
                 return alreadyExistsResponse(res, "Sub Category already exists.");
             }
-
+            slug = await generateSlug(name);
             // Create a new category
-            const subcreatecategory = await SubCategoryModel.create({ name,category_id });
+            const subcreatecategory = await SubCategoryModel.create({ name,category_id,slug });
 
             // Return success response
             return successResponse(res, "Sub Category created successfully.", subcreatecategory);
@@ -39,8 +39,9 @@ module.exports = {
                 return alreadyExistsResponse(res, "Sub Category with this name already exists.");
             }
 
-            // Update the category's name
+            slug = await generateSlug(name);
             category.name = name;
+            category.slug=slug;
             category.category_id = category_id;
             category.isActive=isActive;
             await category.save();

@@ -11,6 +11,11 @@ const SubCategorySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category', // Assuming you have a Category model in your system
     },
+    slug: {
+        type: String,
+        unique: true,
+        trim: true // Ensures no leading/trailing spaces in the name
+    },
     isActive: {
         type: Boolean,
         default:true

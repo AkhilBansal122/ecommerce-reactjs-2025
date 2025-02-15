@@ -16,14 +16,12 @@ export const SubCategory = () => {
 
   const [record, setRecord] = useState([]);
   const [show, setShow] = useState(false);
-  const [data, setData] = useState({
-      name: "",
-      category_id: ""
-    });
-    const [dataErr, setDataErr] = useState({
-      nameErr: "",
-      category_idErr: "",
-    });
+
+  const [name, setname] = useState("");
+  const [nameErr, setnameErr] = useState("");
+
+  const [category_id, setcategory_id] = useState("");
+  const [category_idErr, setcategory_idErr] = useState("");
 
 
   const [totalRows, setTotalRows] = useState(0);
@@ -51,7 +49,7 @@ export const SubCategory = () => {
 
   useEffect(() => {
     activeCategory();
-  }, [data.category_id]);
+  }, [category_id]);
 
   const activeCategory = async () => {
     const response = await getActiveCategory();
@@ -66,37 +64,32 @@ export const SubCategory = () => {
   }
   const handleShow = (record) => {
     if (record && record) {
-      setData(record?.name);
-      setData({ name: record?.name, category_id: record.category_id?._id });
+      setname(record?.name);
+      setcategory_id(record.category_id?._id);
       setId(record?._id);
     }
     setShow(true);
 
   };
   const handleClose = () => {
-    // setbonus("");
-    // setBonusErr("");
-    // setUsdt("");
-    setDataErr("");
-    setDataErr("");
+    setnameErr("");
+    setcategory_idErr("");
     setShow(false);
   };
-    const handlechange = (e) => {
-      let { name, value } = e.target;
-  
-      if (name === "name") {
-        setData({ ...data, name: value });
-        const err = InputValid(name, value);
-        setDataErr({ ...data, nameErr: err });
-      }
-      
-      
-      if (name === "category") {
-        setData({ ...data, category_id: value });
-        value.length === 0 ? setDataErr({ ...data, category_idErr: "category field is required" }) : setDataErr({ ...data, category_idErr: "" });
-      }
-      
-    };
+  const handlechange = (e) => {
+    let { name, value } = e.target;
+
+    if (name === "name") {
+      setname(value);
+      const err = InputValid(name, value);
+      setnameErr(err);
+    }
+    if (name === "category") {
+      setcategory_id(value);
+      value.length === 0 ? setcategory_idErr("category field is required") : setcategory_idErr("");
+    }
+
+  };
   const handleStatusChange = (item) => {
     // Toggle the status (or make an API call to update it in the backend)
     const newStatus = !item.isActive;
@@ -156,32 +149,33 @@ export const SubCategory = () => {
   };
 
   const onSubmit = async () => {
-    console.log("category-->", data.category_id);
-    let datas = {
-      name:data.name,
+
+    let data = {
+      name,
       id,
-      category_id: data.category_id,
+      category_id,
       isActive: true
     };
+    data.name.length === 0 ? setnameErr(InputValid(name, "")) : setnameErr("");
+    data.category_id.length === 0 ? setcategory_idErr("Please select category") : setcategory_idErr("");
 
-    data.name.length === 0 ? setDataErr(InputValid(data.name, '')) : setDataErr("");
-    data.category_id.length === 0 ? setDataErr(InputValid(data.category_id, '')) : setDataErr("");
     if (data.name.length > 0) {
       const config = localStorage.getItem("jwtToken");
-
-      const result = id.length === 0 ? await subcategoryAdd(datas, config) : await subcategoryUpdate(data, config);
+      const result = id.length === 0 ? await subcategoryAdd(data, config) : await subcategoryUpdate(data, config);
       if (result != null && result.status === true) {
         getSubCategoryData(pageClick, perPage);
         toast.dismiss();
         toast.success(result.message);
         setShow(false);
-        setData("");
-        setDataErr("");
+        setname("");
+        setcategory_id("");
+        setcategory_idErr("");
+        setnameErr("");
+
       } else {
         toast.dismiss();
         toast.error(result.message);
       }
-
     }
   };
 
@@ -207,7 +201,7 @@ export const SubCategory = () => {
               </div>
               <button
                 className="btn btn-primary mb-3"
-                onClick={() => { handleShow(); setData(""); setDataErr(""); }
+                onClick={() => { handleShow(); setname(""); setcategory_id(""); setnameErr(""); setcategory_idErr(""); }
                 }
                 title="Add/Update"
               >
@@ -232,41 +226,34 @@ export const SubCategory = () => {
                       onChange={handlechange}
                       type="text"
 
-                      value={data.name}
+                      value={name}
                     ></Form.Control>
-                    <span style={{ color: "red" }}>{dataErr.name}</span>
+                    <span style={{ color: "red" }}>{nameErr}</span>
                   </Form.Group>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInputPhone">
-                      <Form.Label>Select Category</Form.Label>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Form.Select
-                          name="category"
-                          onChange={handlechange}
-                          value={data.category_id}
-                          style={{ maxWidth: '100px', marginRight: '10px' }} // Set a fixed width for the dropdown
-                        >
-                          <option value="">Select</option>
-                          {
-                            categoryList && categoryList.map((element) => {
-                              return (
-                                <option key={element.id} value={element.id}>
-                                  {element.name}
-                                </option>
-                              );
-                            })
-                          }
-                        </Form.Select>
-                      </div>
-                      <span style={{ color: "red" }}>{dataErr.category_id}</span>
-                    </Form.Group>
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInputPhone">
+                    <Form.Label>Select Category</Form.Label>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Form.Select
+                        name="category"
+                        onChange={handlechange}
+                        value={category_id}
+                        style={{ width: '100%', marginRight: '10px' }} // Set width to 100% for full width dropdown
+                      >
+                        <option value="">Select</option>
+                        {
+                          categoryList && categoryList.map((element) => {
+                            return (
+                              <option key={element.id} value={element.id}>
+                                {element.name}
+                              </option>
+                            );
+                          })
+                        }
+                      </Form.Select>
+                    </div>
+                    <span style={{ color: "red" }}>{category_idErr}</span>
+                  </Form.Group>
 
-
-
-
-
-
-                  </div>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
