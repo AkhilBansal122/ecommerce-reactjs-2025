@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 const EmailTemplateModel = require('../Schema/EmailTemplateSchema');
 require('dotenv').config();
+const slugify = require('slugify');
 EmailTemplateModel
 const transporter = nodemailer.createTransport({
     port: 465,  // true for 465, false for other ports
@@ -161,5 +162,8 @@ module.exports = {
 
         }
         
+    },
+    generateSlug : async (name)=>{
+        return  slugify(name, { lower: true, strict: true });
     }
 }

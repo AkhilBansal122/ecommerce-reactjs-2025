@@ -77,6 +77,7 @@ module.exports = {
 
       const totalCountValue = totalCount.length > 0 ? totalCount[0].totalCount : 0;
 
+      
       // Find users where role is "SubAdmin"
       const users = await UserModel.aggregate([
         {
@@ -91,8 +92,62 @@ module.exports = {
           $unwind: '$roleDetails' // Unwind the array created by the lookup
         },
         {
+          $lookup: {
+            from: 'countries', // The name of the Country collection
+            localField: 'country_id', // The field in UserModel that stores the country ID
+            foreignField: '_id', // The field in Country collection that corresponds to country ID
+            as: 'countryDetails'
+          }
+        },
+        {
+          $unwind: '$countryDetails' // Unwind the array created by the lookup
+        },
+        {
+          $lookup: {
+            from: 'states', // The name of the State collection
+            localField: 'state_id', // The field in UserModel that stores the state ID
+            foreignField: '_id', // The field in State collection that corresponds to state ID
+            as: 'stateDetails'
+          }
+        },
+        {
+          $unwind: '$stateDetails' // Unwind the array created by the lookup
+        },
+        {
+          $lookup: {
+            from: 'cities', // The name of the City collection
+            localField: 'city_id', // The field in UserModel that stores the city ID
+            foreignField: '_id', // The field in City collection that corresponds to city ID
+            as: 'cityDetails'
+          }
+        },
+        {
+          $unwind: '$cityDetails' // Unwind the array created by the lookup
+        },
+        {
           $match: {
             'roleDetails.name': 'SubAdmin' // Filter where the role name is 'SubAdmin'
+          }
+        },
+        {
+          $project: {
+            _id: 1, // Include the user ID (or other fields if needed)
+            first_name: 1, // Include the user's name
+            middle_name:1,
+            last_name:1,
+            role_id:1,
+            email:1,
+            country_code:1,
+            phone_no:1,
+            country_id:1,
+            state_id:1,
+            city_id:1,
+            isActive: true,
+
+            'roleDetails.name': 1, // Only include the name from role details
+            'countryDetails.name': 1, // Only include the name from country details
+            'stateDetails.name': 1, // Only include the name from state details
+            'cityDetails.name':1
           }
         },
         {
@@ -102,6 +157,7 @@ module.exports = {
           $limit: limit // Limit the number of results per page
         }
       ]);
+      
       return res.json({
         status: true,
         message: "Sub Admin Fetch successfully",
