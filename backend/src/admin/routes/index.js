@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const permissionController = require("../controllers/permissionController");
 const categoryController = require("../controllers/categoryController");
 const subCategoryController = require("../controllers/SubCategoryController");
+const productController = require("../controllers/ProductsController");
 
 const roleController = require("../controllers/roleController");
 const subAdminController = require("../controllers/subAdminController");
@@ -14,6 +15,7 @@ const {createRoleValidation,updateRoleValidation,deleteRoleValidation,listRoleVa
 const { subAdminCreateValidation,listsubAdmineValidation,subAdminUpdateValidation } = require("../validation/SubAdminValidation");
 const { createCategoryValidation, updateCategoryValidation, listCategoryValidation,statusChanngeCategoryValidation } = require("../validation/categoryValidation");
 const { createSubCategoryValidation, updateSubCategoryValidation, listSubCategoryValidation,statusChangeSubCategoryValidation } = require("../validation/subCategoryValidation");
+const { createProductValidation, updateProductValidation, listProductValidation } = require("../validation/productValidation");
 
 
 const router = express.Router();
@@ -69,4 +71,10 @@ router.put("/sub-category-update",adminverifyToken,updateSubCategoryValidation,s
 router.post("/sub-category-list",adminverifyToken,listSubCategoryValidation,subCategoryController.list);
 router.get("/active-sub-category",adminverifyToken,subCategoryController.activeSubCategory);
 router.put("/sub-category-statusChange",adminverifyToken,statusChangeSubCategoryValidation,subCategoryController.statusChangeSubCategory);
+
+//Product Management
+router.post("/product-create",adminverifyToken,createProductValidation,productController.create);
+router.put("/product-update",adminverifyToken,updateProductValidation,productController.update);
+router.post("/product-list",adminverifyToken,listProductValidation,productController.list);
+
 module.exports = router;
