@@ -65,6 +65,7 @@ module.exports = {
         .messages({
           'number.base': 'Discount must be a number.',
         }),
+        description:Joi.string().optional("")
     });
     // Validate the request against the schema
     validationRequest(req, res, next, schema);
@@ -139,6 +140,7 @@ module.exports = {
         .messages({
           'number.base': 'Discount must be a number.',
         }),
+        description:Joi.string().optional("")
     });
 
     validationRequest(req, res, next, schema);
@@ -185,6 +187,22 @@ module.exports = {
           'boolean.base': 'isActive must be a boolean value (true or false).',
           'any.required': 'isActive is required.',
         }),
+    });
+    validationRequest(req, res, next, schema);
+  },
+  activeSubCategoryByCategoryIdValidation: async (req, res, next) => {
+    // Define the validation schema using Joi
+    const schema = Joi.object({
+      category_id: Joi.string()
+        .length(24) // Ensures the id is exactly 24 characters long (for MongoDB ObjectId)
+        .hex() // Ensures the id contains only hexadecimal characters
+        .required()
+        .messages({
+          'string.length': 'ID must be a 24-character long string.',
+          'string.hex': 'ID must be a valid hexadecimal string.',
+          'any.required': 'ID is required.',
+        }),
+   
     });
     validationRequest(req, res, next, schema);
   },

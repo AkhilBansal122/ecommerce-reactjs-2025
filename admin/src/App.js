@@ -15,6 +15,7 @@ import {Permission} from "./components/permission/PermissionList";
 import {SubAdmin} from "./components/subadmin/SubAdminList";
 import { Category } from "./components/category/CategoryList";
 import { SubCategory } from "./components/subcategory/SubCategoryList";
+import { Product } from "./components/product/ProductList";
 
 function App(props) {
   const { login } = useAuth();
@@ -63,6 +64,10 @@ function App(props) {
                 <Route 
           path="/sub-categories-management"
           element={<ProtectedRoute component={<SubCategory />} />}
+          />
+           <Route 
+          path="/product-management"
+          element={<ProtectedRoute component={<Product />} />}
           />
           <Route
             path="/manual-entry-history"

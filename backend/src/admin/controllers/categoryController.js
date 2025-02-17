@@ -2,6 +2,8 @@ const express = require("express");
 const { successResponse, failedResponse, noRecordFoundResponse, serverErrorResponse, alreadyExistsResponse,generateSlug } = require("../../../Helper/helper");
 require('dotenv').config();
 const CategoryModel = require("../../../Schema/CategorySchema");
+const RoleModel = require("../../../Schema/RoleSchema");
+
 module.exports = {
 
     create: async (req, res) => {
@@ -74,9 +76,10 @@ module.exports = {
         try {
             const page = parseInt(req.body.page) || 1;  // Default to 1 if page is not provided
             const limit = parseInt(req.body.limit) || 10;  // Default to 10 if limit is not provided
-
+            
             // Fetch the paginated results and exclude the __v field
             const Cateogry = await CategoryModel.find()
+            .sort({ createdAt: -1 }) // Sort by createdAt in descending order (latest first)
                 .skip((page - 1) * limit) // Skip based on the page and limit
                 .limit(limit) // Limit the number of results per page
                 .select('-__v'); // Exclude the __v field

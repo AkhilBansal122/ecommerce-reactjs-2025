@@ -64,6 +64,7 @@ module.exports = {
                  // Assuming 'category' is the field in SubCategoryModel that references the Category model
                 select: 'name' // Optionally, you can specify which fields to include from the Category model (e.g., 'name')
               })  
+              .sort({ createdAt: -1 }) // Sort by createdAt in descending order (latest first)
             .skip((page - 1) * limit) // Skip based on the page and limit
                 .limit(limit) // Limit the number of results per page
                 .select('-__v'); // Exclude the __v field

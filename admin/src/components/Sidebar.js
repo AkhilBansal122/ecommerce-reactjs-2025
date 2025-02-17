@@ -108,7 +108,17 @@ function Sidebar() {
                     >
                     <i className="mdi mdi-speedometer" />
                     <span data-key="t-dashboards">{item}</span>
-                  </Link>:null
+                  </Link>:item ==='Product Management' ? <Link
+                      to={"/product-management"}
+                      className={
+                        window.location.pathname === `/product-management` 
+                          ? "nav-link active"
+                          : "nav-link"
+                        }
+                    >
+                    <i className="mdi mdi-speedometer" />
+                    <span data-key="t-dashboards">{item}</span>
+                  </Link>:  null
                   }
                  
                 </li>)

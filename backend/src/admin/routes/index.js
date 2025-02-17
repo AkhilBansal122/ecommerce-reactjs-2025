@@ -15,7 +15,7 @@ const {createRoleValidation,updateRoleValidation,deleteRoleValidation,listRoleVa
 const { subAdminCreateValidation,listsubAdmineValidation,subAdminUpdateValidation } = require("../validation/SubAdminValidation");
 const { createCategoryValidation, updateCategoryValidation, listCategoryValidation,statusChanngeCategoryValidation } = require("../validation/categoryValidation");
 const { createSubCategoryValidation, updateSubCategoryValidation, listSubCategoryValidation,statusChangeSubCategoryValidation } = require("../validation/subCategoryValidation");
-const { createProductValidation, updateProductValidation, listProductValidation } = require("../validation/productValidation");
+const { createProductValidation, updateProductValidation,activeSubCategoryByCategoryIdValidation, listProductValidation,statusChangeProductValidation } = require("../validation/productValidation");
 
 
 const router = express.Router();
@@ -76,5 +76,8 @@ router.put("/sub-category-statusChange",adminverifyToken,statusChangeSubCategory
 router.post("/product-create",adminverifyToken,createProductValidation,productController.create);
 router.put("/product-update",adminverifyToken,updateProductValidation,productController.update);
 router.post("/product-list",adminverifyToken,listProductValidation,productController.list);
+router.get("/active-product",adminverifyToken,productController.activeProduct);
+router.post("/active-subCategoryByCategoryId",adminverifyToken,activeSubCategoryByCategoryIdValidation,productController.activeSubCategoryByCategoryId);
 
+router.post("/product-statusChange",adminverifyToken,statusChangeProductValidation,productController.statusChangeProduct);
 module.exports = router;
