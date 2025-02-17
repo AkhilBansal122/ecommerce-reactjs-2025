@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories } from '../actions/categoryActions';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.categories);
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   return (
     <header className="header">
@@ -83,22 +90,7 @@ const Header = () => {
                   <div className="select-custom">
                     <select id="cat" name="cat">
                       <option value="all">All Categories</option>
-                      <option value={4}>Fashion</option>
-                      <option value={12}>- Women</option>
-                      <option value={13}>- Men</option>
-                      <option value={66}>- Jewellery</option>
-                      <option value={67}>- Kids Fashion</option>
-                      <option value={5}>Electronics</option>
-                      <option value={21}>- Smart TVs</option>
-                      <option value={22}>- Cameras</option>
-                      <option value={63}>- Games</option>
-                      <option value={7}>Home &amp; Garden</option>
-                      <option value={11}>Motors</option>
-                      <option value={31}>- Cars and Trucks</option>
-                      <option value={32}>- Motorcycles &amp; Powersports</option>
-                      <option value={33}>- Parts &amp; Accessories</option>
-                      <option value={34}>- Boats</option>
-                      <option value={57}>- Auto Tools &amp; Supplies</option>
+                       {categories.map((category) => (<option value={category.id}>{category.name}</option>))}
                     </select>
                   </div>
                   {/* End .select-custom */}
@@ -220,14 +212,12 @@ const Header = () => {
                         <div className="col-lg-6">
                           <a href="#" className="nolink">Variations 1</a>
                           <ul className="submenu">
-                            <li><a href="category-banner-full-width.html">Fullwidth Banner</a></li>
-                            <li><a href="category-banner-boxed-slider.html">Boxed Slider Banner</a></li>
-                            <li><a href="category-banner-boxed-image.html">Boxed Image Banner</a></li>
-                            <li><a href="category.html">Left Sidebar</a></li>
-                            <li><a href="category-sidebar-right.html">Right Sidebar</a></li>
-                            <li><a href="category-flex-grid.html">Product Flex Grid</a></li>
-                            <li><a href="category-horizontal-filter1.html">Horizontal Filter1</a></li>
-                            <li><a href="category-horizontal-filter2.html">Horizontal Filter2</a></li>
+                          {categories.map((category) => (
+                          <li key={category.id}>
+                            <a href={category.slug}>{category.name}</a>
+                          </li>
+                        ))}
+
                           </ul>
                         </div>
                         <div className="col-lg-6">

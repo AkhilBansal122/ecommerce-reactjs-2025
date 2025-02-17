@@ -6,7 +6,11 @@ import About from "./components/pages/About"
 import WebFont from 'webfontloader';
 import CFChallengeScript from './components/CFChallengeScript';
 import ContactUs from './components/pages/Contact';
+
+import CategoryList from './components/CategoryList';
+
 const App = () => {
+
   //const currentPage = window.location.pathname;
   useEffect(() => {
     WebFont.load({
@@ -24,6 +28,7 @@ const App = () => {
     <>
     <Router>
       <Routes>
+        <Route path='/c' element={<CategoryList/>} />
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/ContactUs" element={< ContactUs/>}/>

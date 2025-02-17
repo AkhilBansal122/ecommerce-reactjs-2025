@@ -13,6 +13,8 @@ app.use(express.urlencoded({ extended: true })); // Handles URL-encoded data
 
 // Routes
 app.use("/api/admin", require("./src/admin/routes/index")); // Admin Router
+app.use("/api/web", require("./src/web/routes/index")); // web Router
+
 
 // Starting the server
 app.listen(PORT, () => {
