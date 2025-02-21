@@ -1,13 +1,29 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories } from '../actions/categoryActions';
+import { Link } from 'react-router-dom';
+import { setCategories, setError, setLoading } from '../store/slices/CategorySlice';
+import config from '../config';
+import axios from 'axios';
 
 const Header = () => {
+
   const dispatch = useDispatch();
-  const { categories } = useSelector((state) => state.categories);
+  const { categoryList } = useSelector((state) => state.categories);
   useEffect(() => {
-    dispatch(fetchCategories());
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${config.baseURL}web/active-category`); // API call to fetch categories
+        if (response.data.status === true) {
+          dispatch(setCategories(response.data.data));
+        } else {
+          console.log("Failed to fetch categories: ", response.data.message);
+        }
+      } catch (err) {
+        console.log("Failed to fetch categories: ", err);
+      }
+    };
+
+    fetchCategories();
   }, [dispatch]);
 
   return (
@@ -90,8 +106,13 @@ const Header = () => {
                   <div className="select-custom">
                     <select id="cat" name="cat">
                       <option value="all">All Categories</option>
-                       {categories.map((category) => (<option value={category.id}>{category.name}</option>))}
+                      {categoryList.map((category) => (
+                        <option value={category.id} key={category.id || `cat-${category.name}`}>
+                          {category.name}
+                        </option>
+                      ))}
                     </select>
+
                   </div>
                   {/* End .select-custom */}
                   <button className="btn icon-magnifier p-0" title="search" type="submit" />
@@ -212,12 +233,11 @@ const Header = () => {
                         <div className="col-lg-6">
                           <a href="#" className="nolink">Variations 1</a>
                           <ul className="submenu">
-                          {categories.map((category) => (
-                          <li key={category.id}>
-                            <a href={category.slug}>{category.name}</a>
-                          </li>
-                        ))}
-
+                            {categoryList.map((category) => (
+                              <li key={category.id || `cat-${category.name}`}>
+                                <a href={`/${category.slug}`}>{category.name}</a>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                         <div className="col-lg-6">
@@ -293,7 +313,7 @@ const Header = () => {
                   <li><a href="element-testimonial.html">Testimonials</a></li>
                 </ul>
               </li>
-              <li><Link to ="/ContactUs">Contact Us</Link></li>
+              <li><Link to="/ContactUs">Contact Us</Link></li>
               <li className="float-right"><a href="https://1.envato.market/DdLk5" rel="noopener" className="pl-5" target="_blank">Buy Porto!</a></li>
               <li className="float-right"><a href="#" className="pl-5">Special Offer!</a></li>
             </ul>
