@@ -1,9 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import categoriesSlices from "./slices/CategorySlice";
+import categorySlice from "./slices/CategorySlice";  // Corrected to singular form 'categorySlice'
+import productSlice from "./slices/productSlice";    // Naming is good here
 
 const store = configureStore({
-    reducer:{
-        categories : categoriesSlices
-    }
-})
+  reducer: {
+    categories: categorySlice,  // Use singular 'categorySlice' as per convention
+    products: productSlice
+  },
+});
+
 export default store;

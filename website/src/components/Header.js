@@ -1,31 +1,20 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setCategories, setError, setLoading } from '../store/slices/CategorySlice';
-import config from '../config';
-import axios from 'axios';
-
+import { fetchCategories } from '../store/slices/CategorySlice';
+import { fetchProducts }  from '../store/slices/productSlice';
 const Header = () => {
 
   const dispatch = useDispatch();
   const { categoryList } = useSelector((state) => state.categories);
+  const { productList } = useSelector((state)=>state.products); 
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${config.baseURL}web/active-category`); // API call to fetch categories
-        if (response.data.status === true) {
-          dispatch(setCategories(response.data.data));
-        } else {
-          console.log("Failed to fetch categories: ", response.data.message);
-        }
-      } catch (err) {
-        console.log("Failed to fetch categories: ", err);
-      }
-    };
-
-    fetchCategories();
+    
+    dispatch(fetchCategories());
+    dispatch(fetchProducts());
+    
   }, [dispatch]);
-
   return (
     <header className="header">
       <div className="header-top">
@@ -226,56 +215,22 @@ const Header = () => {
               </li>
               <li>
                 <a href="category.html">Categories</a>
-                <div className="megamenu megamenu-fixed-width">
-                  <div className="row">
-                    <div className="col-lg-8">
-                      <div className="row">
-                        <div className="col-lg-6">
-                          <a href="#" className="nolink">Variations 1</a>
-                          <ul className="submenu">
+                          <ul className="submenu custom-scrollbar">
                             {categoryList.map((category) => (
                               <li key={category.id || `cat-${category.name}`}>
                                 <a href={`/${category.slug}`}>{category.name}</a>
                               </li>
                             ))}
                           </ul>
-                        </div>
-                        <div className="col-lg-6">
-                          <a href="#" className="nolink">Variations 2</a>
-                          <ul className="submenu">
-                            <li><a href="category-list.html">List Types</a></li>
-                            <li><a href="category-infinite-scroll.html">Ajax Infinite Scroll</a></li>
-                            <li><a href="category.html">3 Columns Products</a></li>
-                            <li><a href="category-4col.html">4 Columns Products</a></li>
-                            <li><a href="category-5col.html">5 Columns Products</a></li>
-                            <li><a href="category-6col.html">6 Columns Products</a></li>
-                            <li><a href="category-7col.html">7 Columns Products</a></li>
-                            <li><a href="category-8col.html">8 Columns Products</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="banner">
-                        <a href="#">
-                          <img src="assets/images/demoes/demo4/banners/menu-banner.jpg" alt="Menu banner" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </li>
               <li>
                 <a href="product.html">Products</a>
-                <ul>
-                  <li><a href="product.html">Product</a></li>
-                  <li><a href="product-centered.html">Product Centered</a></li>
-                  <li><a href="product-extended.html">Product Extended</a></li>
-                  <li><a href="product-gallery.html">Product Gallery</a></li>
-                  <li><a href="product-sticky.html">Product Sticky Info</a></li>
-                  <li><a href="product-sidebar.html">Product Sidebar</a></li>
-                  <li><a href="product-fullwidth.html">Product Full Width</a></li>
-                  <li><a href="product-masonry.html">Product Masonry</a></li>
+                <ul className='custom-scrollbar'>
+                              {productList.map((category) => (
+                              <li key={category.id || `cat-${category.name}`}>
+                                <a href={`/${category.slug}`}>{category.name}</a>
+                              </li>
+                            ))}
                 </ul>
               </li>
               <li>
@@ -287,30 +242,6 @@ const Header = () => {
                   <li><a href="dashboard.html">Dashboard</a></li>
                   <li><a href="login.html">Login</a></li>
                   <li><a href="forgot-password.html">Forgot Password</a></li>
-                </ul>
-              </li>
-              <li>
-                <a href="blog.html">Blog</a>
-              </li>
-              <li>
-                <a href="#">Elements</a>
-                <ul className="custom-scrollbar">
-                  <li><a href="element-accordions.html">Accordion</a></li>
-                  <li><a href="element-alerts.html">Alerts</a></li>
-                  <li><a href="element-animations.html">Animations</a></li>
-                  <li><a href="element-banners.html">Banners</a></li>
-                  <li><a href="element-buttons.html">Buttons</a></li>
-                  <li><a href="element-call-to-action.html">Call to Action</a></li>
-                  <li><a href="element-countdown.html">Count Down</a></li>
-                  <li><a href="element-counters.html">Counters</a></li>
-                  <li><a href="element-headings.html">Headings</a></li>
-                  <li><a href="element-icons.html">Icons</a></li>
-                  <li><a href="element-info-box.html">Info box</a></li>
-                  <li><a href="element-posts.html">Posts</a></li>
-                  <li><a href="element-products.html">Products</a></li>
-                  <li><a href="element-product-categories.html">Product Categories</a></li>
-                  <li><a href="element-tabs.html">Tabs</a></li>
-                  <li><a href="element-testimonial.html">Testimonials</a></li>
                 </ul>
               </li>
               <li><Link to="/ContactUs">Contact Us</Link></li>
