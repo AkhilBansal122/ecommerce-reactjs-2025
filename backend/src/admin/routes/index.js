@@ -1,10 +1,16 @@
 const express = require("express");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
 const {adminverifyToken } = require("../../../middleware/authmiddleware");
 const userController = require("../controllers/userController");
 const permissionController = require("../controllers/permissionController");
 const categoryController = require("../controllers/categoryController");
 const subCategoryController = require("../controllers/SubCategoryController");
 const productController = require("../controllers/ProductsController");
+
+const productImageController = require("../controllers/ProductImageController");
 
 const roleController = require("../controllers/roleController");
 const subAdminController = require("../controllers/subAdminController");
@@ -17,8 +23,28 @@ const { createCategoryValidation, updateCategoryValidation, listCategoryValidati
 const { createSubCategoryValidation, updateSubCategoryValidation, listSubCategoryValidation,statusChangeSubCategoryValidation } = require("../validation/subCategoryValidation");
 const { createProductValidation, updateProductValidation,activeSubCategoryByCategoryIdValidation, listProductValidation,statusChangeProductValidation } = require("../validation/productValidation");
 
-
 const router = express.Router();
+
+
+// Set up multer storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const uploadPath = path.join(__dirname, "../../uploads");
+    
+      // Check if the folder exists, if not, create it
+      if (!fs.existsSync(uploadPath)) {
+        fs.mkdirSync(uploadPath, { recursive: true }); // Create folder recursively
+      }
+      
+      cb(null, uploadPath); // Specify the folder for uploads
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`); // Create a unique filename
+    },
+  });
+  
+  // Initialize multer with storage configuration
+  const upload = multer({ storage });
 
 // Example POST route to handle form data
 router.post("/login",loginValidation,userController.login);
@@ -78,6 +104,9 @@ router.put("/product-update",adminverifyToken,updateProductValidation,productCon
 router.post("/product-list",adminverifyToken,listProductValidation,productController.list);
 router.get("/active-product",adminverifyToken,productController.activeProduct);
 router.post("/active-subCategoryByCategoryId",adminverifyToken,activeSubCategoryByCategoryIdValidation,productController.activeSubCategoryByCategoryId);
-
 router.post("/product-statusChange",adminverifyToken,statusChangeProductValidation,productController.statusChangeProduct);
+
+//Product image
+router.post("/product-image-create",adminverifyToken,upload.any(),productImageController.create);
+
 module.exports = router;

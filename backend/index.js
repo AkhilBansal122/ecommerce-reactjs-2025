@@ -4,12 +4,15 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 const cors = require('cors');
+const path = require("path");
 const { connection } = require("./config/connection");
+// app.use('/uploads', express.static(path.join(__dirname, './../../uploads')));
 
 // Middleware
 app.use(cors());
 app.use(express.json()); // This handles JSON body parsing
 app.use(express.urlencoded({ extended: true })); // Handles URL-encoded data
+
 
 // Routes
 app.use("/api/admin", require("./src/admin/routes/index")); // Admin Router

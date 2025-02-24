@@ -9,7 +9,6 @@ const router = express.Router();
 
 //Caregory management
 router.get("/active-category",categoryController.activeCategory);
-
 router.get("/active-product",productController.activeProduct);
 
 
