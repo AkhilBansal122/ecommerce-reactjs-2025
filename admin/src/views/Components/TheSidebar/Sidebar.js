@@ -115,7 +115,7 @@ const SideBar = ({ handleNavLinkClick }) => {
                                 <Accordion.Collapse eventKey="3" className='subMenuSide'>
                                     <>
                                         {ModuleAccess.includes("Category Management") && (
-                                            <NavLink to="/admin/category/list">Category</NavLink>
+                                            <NavLink to="/admin/categories/list">Category</NavLink>
                                         )}
                                         {ModuleAccess.includes("Sub Category Management") && (
                                             <NavLink to="/admin/subcategory/list">Sub Category</NavLink>

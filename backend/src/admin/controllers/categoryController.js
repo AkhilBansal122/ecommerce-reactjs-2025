@@ -17,7 +17,7 @@ module.exports = {
             }
             slug = await generateSlug(name);
             // Create a new category
-            const createcategory = await CategoryModel.create({ name,slug });
+            const createcategory = await CategoryModel.create({ name,slug,parent_id:null });
 
             // Return success response
             return successResponse(res, "Category created successfully.", createcategory);

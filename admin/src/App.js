@@ -52,6 +52,10 @@ import SubAdminList from './views/pages/SubAdmin/List';
 import SubAdminAdd from './views/pages/SubAdmin/Add';
 import SubAdminEdit from './views/pages/SubAdmin/Edit';
 
+import CategoriesList from './views/pages/Category/List';
+import CategoriesAdd from "./views/pages/Category/Add";
+import CategoriesEdit from "./views/pages/Category/Edit";
+
 var CryptoJS = require("crypto-js");
 
 
@@ -91,6 +95,12 @@ function App() {
                         <Route path="permission/list" index element={<PermissionList/>}/>
                         <Route path="permissions/edit/:id" index element={<PermissionEdit/>}/>
                       
+                        {/* Categories MAnagement*/}
+                        <Route path="categories/list" index element={<CategoriesList/>}/>
+                        <Route path="categories/add" index element={<CategoriesAdd/>}/>
+                        <Route path="categories/edit/:id" index element={<CategoriesEdit/>}/>
+                     
+
                         {/* SubAdmin Management */}
                         <Route path='user/list' index element={<SubAdminList />} />
                         <Route path='user/add' index element={<SubAdminAdd />} />

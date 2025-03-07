@@ -5,16 +5,17 @@ import { ToastOverError, ToastOverSuccess } from "../common/Toast/ToastOver";
 import HandleError from "../common/Apis/HandleError";
 
 const initialState = {
-    paginationList: [],  // List of permissions for the current page
+    categoryList: [],  // List of role for the current page
     currentPage: 1,      // Current page number
     totalPages: 1,       // Total number of pages
     pageSize: 10,        // Number of items per page
     totalItems: 0,       // Total number of items
     loading: false,      // Loading state for data fetch
     error: null,         // Error message
+    activeCategoryList: []
 };
-const permissionSlice = createSlice({
-    name: "permission",
+const categorySlice = createSlice({
+    name: "category",
     initialState,
     reducers: {
         fetchDataLoading(state) {
@@ -24,9 +25,9 @@ const permissionSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        fetchPermissionListSuccess(state, action) {
+        fetchcaotegorylistSuccess(state, action) {
             state.loading = action.payload.loading;
-            state.paginationList = action.payload.permissions;
+            state.caotegorylist = action.payload.caotegorylist;
             state.currentPage = action.payload.currentPage;
             state.totalPages = action.payload.totalPages;
             state.pageSize = action.payload.pageSize;
@@ -37,15 +38,19 @@ const permissionSlice = createSlice({
         },
         setPageSize(state, action) {
             state.pageSize = action.payload; // Update the page size
-        }
+        },
+        fetchActiveCategoryListSuccess(state, action) {
+            state.loading = action.payload.loading;
+            state.activeCategoryList = action.payload.data;
+        },
     }
 });
-export default permissionSlice.reducer;
-export const { fetchDataLoading, fetchApiFailure, fetchPermissionListSuccess, setPage, setPageSize } = permissionSlice.actions;
+export default categorySlice.reducer;
+export const { fetchDataLoading, fetchApiFailure, fetchcaotegorylistSuccess, fetchActiveCategoryListSuccess, setPage, setPageSize } = categorySlice.actions;
 
-export const AddPermissionAction = (value, callBack) => async (dispatch) => {
+export const addCategoryAction = (value, callBack) => async (dispatch) => {
     try {
-        const data = await axiosBaseURL.post(`${ApiUrl}/permission-create`, value, {
+        const data = await axiosBaseURL.post(`${ApiUrl}/category-create`, value, {
             headers: authHeader(),
         });
         callBack(data?.data)
@@ -62,9 +67,9 @@ export const AddPermissionAction = (value, callBack) => async (dispatch) => {
         HandleError(error?.response?.data)
     }
 };
-export const updatePermissionAction = (value, callBack) => async () => {
+export const updateCategoriesAction = (value, callBack) => async () => {
     try {
-        const data = await axiosBaseURL.put(`${ApiUrl}/permission-update`, value, {
+        const data = await axiosBaseURL.put(`${ApiUrl}/category-update`, value, {
             headers: authHeader(),
         });
         callBack(data?.data)
@@ -80,9 +85,9 @@ export const updatePermissionAction = (value, callBack) => async () => {
         HandleError(error?.response?.data)
     }
 };
-export const permissionStatusUpdateAction = (value, callBack) => async (dispatch) => {
+export const categoriesStatusUpdateAction = (value, callBack) => async (dispatch) => {
     try {
-        const data = await axiosBaseURL.put(`${ApiUrl}/permission-statusChange`, value, {
+        const data = await axiosBaseURL.put(`${ApiUrl}/category-statusChange`, value, {
             headers: authHeader(),
         });
         callBack(data?.data)
@@ -100,7 +105,7 @@ export const permissionStatusUpdateAction = (value, callBack) => async (dispatch
         HandleError(error?.response?.data)
     }
 };
-export const deletePermissionAction = (value, callBack) => async (dispatch) => {
+export const deleteRoleAction = (value, callBack) => async (dispatch) => {
     try {
 
         const config = {
@@ -125,13 +130,13 @@ export const deletePermissionAction = (value, callBack) => async (dispatch) => {
     }
 };
 
-// Action to fetch paginated permissions list
-export const permissionListAction = (payload) => async (dispatch) => {
+// Action to fetch paginated role list
+export const categoriesListAction = (payload) => async (dispatch) => {
     try {
 
         dispatch(fetchDataLoading());
         // Request paginated data from the API
-        const { data } = await axiosBaseURL.post(`${ApiUrl}/permission-list`, {
+        const { data } = await axiosBaseURL.post(`${ApiUrl}/category-list`, {
             page: payload.page,          // Pass page number to the API
             limit: payload.limit      // Pass page size to the API
         }, {
@@ -142,18 +147,40 @@ export const permissionListAction = (payload) => async (dispatch) => {
             ToastOverError(data?.message);
         } else {
             // Dispatch success and update the state with the pagination data
-            dispatch(fetchPermissionListSuccess({
-                loading: true,
-                permissions: data?.data,    // Array of permissions for the current page
+            dispatch(fetchcaotegorylistSuccess({
+                loading: false,
+                caotegorylist: data?.data,    // Array of role for the current page
                 currentPage: data?.pagination?.page,    // Current page number from API response
                 totalPages: data?.pagination?.totalPages,      // Total pages calculated by the API
                 pageSize: data?.pagination?.limit,                        // Page size (number of items per page)
                 totalItems: data?.pagination?.total       // Total number of items from the API
             }));
-            ToastOverSuccess(data?.message);
         }
     } catch (error) {
         dispatch(fetchApiFailure(error.message));
+        ToastOverError(error?.response?.data?.message);
+        HandleError(error?.response?.data);
+    }
+};
+export const activePermissionListAction = () => async (dispatch) => {
+    try {
+        dispatch(fetchDataLoading()); // Set loading to true before the API request
+
+        // Request active permission list data from the API
+        const { data } = await axiosBaseURL.get(`${ApiUrl}/active-category`, {
+            headers: authHeader(),
+        });
+        if (data.status === false) {
+            ToastOverError(data?.message);
+        } else {
+            // Dispatch success and update the state with the active permission list
+            dispatch(fetchActiveCategoryListSuccess({
+                loading: true,
+                data: data?.data    // Array of roles from the API response
+            }));
+        }
+    } catch (error) {
+        dispatch(fetchApiFailure(error.message)); // Handle API failure
         ToastOverError(error?.response?.data?.message);
         HandleError(error?.response?.data);
     }

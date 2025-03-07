@@ -4,10 +4,17 @@ const mongoose = require('mongoose');
 const CategorySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Category name is required'], // Custom error message
+        required: [true, 'Name is required'], // Custom error message
         unique: true,
         trim: true // Ensures no leading/trailing spaces in the name
     },
+    parent_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Category',  // Reference to Permission model
+            required: false,
+            default: null // Set default value to null
+            
+        },
     slug: {
         type: String,
         unique: true,
