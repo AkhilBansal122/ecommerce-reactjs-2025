@@ -6,7 +6,7 @@ require('dotenv').config();
 module.exports = {
   create: async (req, res) => {
     try {
-      const { first_name, last_name, middle_name, email, password, role_id, country_id, state_id, city_id	, phone_no, country_code } = req.body;
+      const { first_name, last_name,organization, middle_name, email, password,alter_no,postal_code, role_id, country_id, state_id, city_id	, phone_no, country_code,gst_no,gender,country_code2,address } = req.body;
       const hashPassword = await bcrypt.hash(password, 10); // Hashing with salt rounds = 10
       const ExistEmail = await UserModel.findOne({ email });
       if (ExistEmail) {
@@ -23,6 +23,14 @@ module.exports = {
         city_id:city_id,
         country_code,
         phone_no,
+        organization,
+        alter_no,
+        alter_no,
+        country_code2,
+        postal_code,
+        address,
+        gender,
+        gst_no,
         isActive: true,
         password: hashPassword, // Store the hashed password
         created_at: new Date(), // Assuming your schema supports 'created_at'
@@ -135,12 +143,21 @@ module.exports = {
             first_name: 1, // Include the user's name
             middle_name:1,
             last_name:1,
+            organization:1,
             role_id:1,
             email:1,
             country_code:1,
             phone_no:1,
             country_id:1,
             state_id:1,
+            phone_no:1,
+            alter_no:1,
+            postal_code:1,
+            gst_no:1,
+            address:1,
+            gender:1,
+            country_code:1,
+            country_code2:1,
             city_id:1,
             isActive: true,
 

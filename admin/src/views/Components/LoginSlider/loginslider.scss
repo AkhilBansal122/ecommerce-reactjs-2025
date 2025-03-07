@@ -1,0 +1,43 @@
+@import "../../../var.scss";
+
+.loginSlide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    img{
+        max-width: 310px;
+    }
+    h4 {
+        font-size: 25px;
+        margin-top: 35px;
+        max-width: 500px;
+        margin-bottom: 15px;
+        text-transform: capitalize;
+    }
+    p {
+        margin-bottom: 0;
+        font-size: 16px;
+        max-width: 550px;
+    }
+}
+
+
+.swiper-pagination-bullet {
+    background:  $theme-color;
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    transform-origin: center;
+    transition: all .3s ease-in-out;
+    border-radius: 20px;
+}
+.swiper-pagination{
+    position: unset;
+    margin-top: 15px;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active{
+    width:35px;
+}

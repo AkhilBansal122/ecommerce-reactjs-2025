@@ -6,8 +6,7 @@ const app = express();
 const cors = require('cors');
 const path = require("path");
 const { connection } = require("./config/connection");
-// app.use('/uploads', express.static(path.join(__dirname, './../../uploads')));
-
+ app.use('/public/uploads', express.static(path.join(__dirname,'public',  'uploads')));
 // Middleware
 app.use(cors());
 app.use(express.json()); // This handles JSON body parsing

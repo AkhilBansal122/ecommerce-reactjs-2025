@@ -1,0 +1,160 @@
+
+@import '../../var';
+
+.themeTable {
+    margin-bottom: 0;
+    font-size: 14px; 
+    vertical-align: middle;
+    white-space: nowrap;
+
+    tr {
+        border-bottom: 1px solid #32414A;
+
+        &:last-child{
+        border-bottom: 0;
+        }
+
+        th, td{
+          &:last-child{
+            border-right: 0;
+          }  
+        }
+    }
+
+    tbody{
+        tr{
+            &:nth-child(even){
+                // background-color: #2c74b338;
+
+                td{
+                    &:first-child{
+                        // background: #0a3058;
+                    }
+                }
+            }
+        }
+    }
+    th{
+        color:#fff;
+        padding: 15px 30px;
+        border:0;
+        font-size: 16px;
+        font-weight: 400;
+        vertical-align: middle;
+        background: #051312;
+        border-right: 1px solid #32414A;
+        border-bottom: 1px solid #32414A;
+
+        &:first-child{
+            position: sticky;
+            left:0;
+        }
+        &:last-child{
+            //text-align: end;
+        }
+
+        .sortTableBtn{
+            padding: 0;
+            margin: 0;
+            background: transparent;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 0;
+            color: #fff;
+            border: 0;
+            margin-left: 5px;
+        }
+    }
+    td{
+        color:#fff;
+        padding: 15px 30px;
+        border:0;
+        background: transparent;
+        border-right: 1px solid #32414A;
+        max-width: 300px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &:first-child{
+            position: sticky;
+            left:0;
+            background: #051312;
+        }
+    }
+    .userCol_table{
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+        gap:16px;
+        img{
+            width:32px;
+            height:32px;
+            border-radius: 50%;
+            object-fit: contain;
+            object-position: center;
+            background: #f7f7f7;
+        }
+    }
+    .btnTableGroup{
+        display: flex;
+        align-items: center;
+        gap:15px;
+        justify-content: end;
+
+        button, .btn_add_faqs{
+            box-shadow: none;
+            outline: 0;
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #051312;
+            background: $scondary-color;
+            border-radius: 50%;
+            border:0;
+            transition:  all .3s ease-in-out;
+            font-size: 1.8rem;
+
+            &:hover{
+                color:#fff;
+                background:$theme-color
+            }
+        }
+    }
+    .successMark{
+        display: inline-block;
+        width:13px;
+        height:13px;
+        border-radius: 50%;
+        background:$success-color;
+    }
+    .warningMark{
+        display: inline-block;
+        width:13px;
+        height:13px;
+        border-radius: 50%;
+        background:$warning-color;
+    }
+    .errorMark{
+        display: inline-block;
+        width:13px;
+        height:13px;
+        border-radius: 50%;
+        background:$error-color;
+    }
+
+    &.contest_table{
+        th{
+            &:last-child{
+                text-align: start;
+            }
+        }
+    }
+}
+
+.tow_select_year.four_faqs_input {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}

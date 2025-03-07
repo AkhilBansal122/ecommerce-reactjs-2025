@@ -1,0 +1,77 @@
+@import "/src/var";
+.css-d7l1ni-option {
+    background-color: #001d3f !important;
+}
+
+.css-10wo9uf-option:active,
+.react-select__menu {
+    background-color: $warning-color !important;
+
+    &:focus-visible {
+        outline: none !important;
+    }
+}
+
+.css-1jqq78o-placeholder {
+    color: #d5d5d5 !important;
+}
+
+.multi_select_input {
+    &:focus-visible {
+        outline: none !important;
+    }
+    .css-13cymwt-control,
+    .css-t3ipsp-control {
+        box-shadow: none;
+        outline: 0;
+        min-height: 50px;
+        padding-left: 15px;
+        padding-right: 15px;
+        letter-spacing: 0.05em;
+        font-size: 14px;
+        font-weight: 400;
+        border-radius: 8px;
+        color: #d5d5d5;
+        background-color: hsl(212.25deg 100% 15.69%);
+        border: 1px solid hsl(212deg 66% 34% / 60%);
+        background-image: url(./../../../../src/assets/select_dropdown.svg);
+        background-size: 16px;
+        background-repeat: no-repeat;
+        background-position: center right 2rem;
+    }
+
+    .css-wsp0cs-MultiValueGeneric {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-radius: 5px 0px 0px 5px;
+        color: #fff;
+        font-size: 14px;
+        background: $warning-color;
+        box-sizing: border-box;
+        padding: 5px 10px;
+    }
+
+    .css-1p3m7a8-multiValue {
+        background-color: transparent;
+        border-radius: 0;
+        margin-right: 5px;
+        box-sizing: border-box;
+    }
+
+    .css-12a83d4-MultiValueRemove {
+        background: $warning-color;
+        border-radius: 0px 5px 5px 0px;
+        color: #fff;
+        font-size: 14px;
+
+        &:hover {
+            background: $warning-color;
+            color: #fff;
+        }
+    }
+
+    .css-tj5bde-Svg {
+        display: none;
+    }
+}

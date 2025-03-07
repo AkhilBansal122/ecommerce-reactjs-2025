@@ -1,0 +1,527 @@
+@import "../../../var.scss";
+
+.dash_header {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1030;
+    display: flex;
+    background-color: #051312;
+}
+
+.dash_logo .logo_fold {
+    display: none;
+}
+
+.dash_header .dash_logo {
+    width: 315px;
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #638484;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    border-right: 1px solid rgba(255, 255, 255, 0.1019607843);
+    height: 180px;
+    border-bottom: 1px solid #ffffff1a;
+}
+
+.dash_userProfile {
+    display: flex;
+    align-items: center;
+}
+
+.dash_userProfile img {
+    box-shadow: 0px 5px 10px 6px rgba(41, 72, 152, 0.14);
+    border-radius: 10px;
+    width: 100%;
+    flex: 0 0 48px;
+    max-width: 48px;
+}
+
+.prfDash_userContent {
+    flex: 0 0 calc(100% - 48px);
+    max-width: calc(100% - 48px);
+    padding-left: 15px;
+}
+
+.topPRfNameUser {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1;
+    color: #0d1118;
+    margin-bottom: 5px;
+}
+
+.makeAvaiDash {
+    display: flex;
+    align-items: center;
+}
+
+.makeAvaiDash span {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 17px;
+    color: rgba(13, 17, 24, 0.6);
+    margin-right: 6px;
+}
+
+.statusDash_tag {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 17px;
+    color: #0d1118;
+    margin-left: 6px;
+}
+
+.statusDash_tag.available {
+    color: #0cab50;
+}
+
+.statusDash_tag.notAvailable {
+    color: #ee0909;
+}
+
+.nav_right_notification .dropdown-menu {
+    border: 0px;
+    border-radius: 10px;
+    font-size: 14px;
+    min-width: 180px;
+    color: #53535f;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    width: 350px;
+    padding: 0;
+    padding-bottom: 15px;
+}
+
+.nav_dash_wrap {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1019607843);
+    align-items: center;
+    padding: 15px 30px;
+    background: #638484;
+    height: 90px;
+}
+
+.notiHeader_top {
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.notiHeader_top .viewBtn {
+    color: #fff;
+    font-weight: 500;
+    background-color: $scondary-dark;
+    border: 1px solid $scondary-dark;
+    padding: 0.35rem 1rem;
+    height: auto;
+    line-height: 1.25;
+    font-size: 0.875rem;
+    border-radius: 5px;
+}
+
+.notiHeader_top i {
+    padding-right: 5px;
+}
+
+.notificationListDrop {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px;
+    overflow: auto;
+}
+
+.notificationListDrop::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.notificationListDrop::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 5px;
+}
+
+.notificationListDrop::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notificationListDrop .dropdown-item {
+    padding: 15px;
+}
+
+.notificationListDrop li:not(:last-child) .dropdown-item {
+    border-bottom: 1px solid #edf2f9;
+}
+
+.notificationListDrop .dropdown-item:hover {
+    background: #fafafa;
+}
+
+.notiListCard {
+    display: flex;
+    align-items: center;
+}
+
+.notiListCard .notiListImg {
+    flex: 0 0 30px;
+    max-width: 30px;
+    width: 100%;
+}
+
+.notiListCard .notiListImg img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.notiListCard .notiListContent p {
+    color: #2a2a2a;
+    font-size: 14px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notiListCard .notiListContent p span {
+    color: #CB2222;
+}
+
+.notiListCard .notiListContent small {
+    display: block;
+    color: #72849a;
+}
+
+.notiListCard .notiListContent {
+    flex: 0 0 calc(100% - 30px);
+    max-width: calc(100% - 30px);
+    width: 100%;
+    padding-left: 15px;
+}
+
+.notiHeaderTopHeading {
+    color: #212529;
+    font-weight: 500;
+    font-size: 22px;
+}
+
+.notiHeaderTopHeading i {
+    font-weight: 500;
+}
+
+.nav_dash_wrpRight {
+    display: flex;
+    align-items: center;
+}
+
+.rightMenuBtn {
+    display: inline-block;
+    color: #ffffff;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: 0;
+    border: 0;
+    display: flex;
+    line-height: 1;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    position: relative;
+    font-size: 22px;
+    &:hover, &:active, &:focus, &.show,  &:first-child:active  {
+        background: transparent;
+        color: #fff;
+    }
+    .noticount {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        background: $warning-color;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        border: 1px solid #fff;
+        right: 2px;
+        top: 5px;
+        line-height: 0;
+    }
+}
+
+.mr-15 {
+    margin-right: 15px;
+}
+
+.rightMenuBtn.langDropBtn {
+    min-width: 48px;
+    width: auto;
+    padding: 10px 15px;
+}
+
+.rightMenuBtn.langDropBtn img {
+    height: 14px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.nav_right_notification.landDropDown .dropdown-menu {
+    padding: 0;
+    width: unset;
+    min-width: unset;
+    border-radius: 10px;
+}
+
+.dashIconFold svg {
+    width: 25px;
+    height: 25px;
+    color: $theme-color;
+    transition: all 0.2s ease;
+}
+
+.dashIconFold {
+    display: inline-block;
+    padding: 5px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    outline: 0;
+
+    img {
+        max-width: 250px;
+        width: 100%;
+    }
+}
+
+.nav_dash_wrpLeft {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+// nav toggle bar
+
+.navbar-toggler {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    right: 0px;
+    padding: 0;
+    z-index: 1;
+    &:active,
+    &:focus {
+        outline: 0;
+        box-shadow: none;
+    }
+    &::before {
+        -webkit-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+        position: absolute;
+        top: 2px;
+        right: 0;
+        display: block;
+        height: 2px;
+        width: 22px;
+        background: #fff;
+        content: "";
+    }
+    &::after {
+        content: "";
+        background: #fff;
+        position: absolute;
+        top: 20px;
+        right: 0;
+        display: block;
+        height: 2px;
+        width: 22px;
+    }
+    span {
+        -webkit-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+        display: block;
+        height: 2px;
+        width: 22px;
+        background: #fff;
+    }
+}
+
+.landing_layouts_section {
+    .navbar-toggler {
+        &::after {
+            background: transparent;
+        }
+    }
+}
+
+.is-folded {
+    .navbar-toggler {
+        &::before {
+            top: 10px;
+            background: #fff;
+            width: 22px;
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+        span {
+            opacity: 0;
+        }
+        &::after {
+            -webkit-transition: all 0.3s ease;
+            -ms-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+            top: 10px;
+            border: 0;
+            height: 2px;
+            width: 22px;
+            background: #fff;
+            -webkit-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .is-folded {
+        .dash_header {
+            .dash_logo {
+                width: 80px;
+                height: 90px;
+                .logo_fold {
+                    display: block;
+                    height: 60px;
+                    width: 60px;
+                    svg {
+                        width: 45px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 1199px) {
+    .dashIconFold {
+        img {
+            max-width: 170px;
+        }
+    }
+}
+
+@media only screen and (max-width: 991.98px) {
+    .dash_header {
+        .dash_logo {
+            width: fit-content;
+            background: #638484;
+            border-bottom: 1px solid rgba(190, 209, 235, 0.3);
+            height: 90px;
+        }
+    }
+    .nav_dash_wrap {
+        justify-content: flex-end;
+        align-items: center;
+        flex-direction: row-reverse;
+        gap: 30px;
+    }
+    .dashIconFold {
+        margin-right: 0;
+        margin-left: 0;
+        img {
+            width: 100%;
+            max-width: 100px;
+        }
+    }
+    .nav_dash_wrpRight {
+        margin-left: auto;
+    }
+    .dash_userProfile {
+        display: none;
+    }
+
+    .nav_dash_wrpLeft {
+        .dashIconFold {
+            margin-left: 15px;
+            line-height: 1;
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .dash_header {
+        height: 90px;
+        .dash_logo {
+            padding-left: 15px;
+        }
+    }
+    .nav_dash_wrap {
+        padding: 5px 15px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .nav_dash_wrap{
+        height: 60px;
+    }
+    .dash_header {
+        .dash_logo {
+            padding: 5px;
+            height: 60px;
+            .folded {
+                display: block;
+            }
+            .notFolded {
+                display: none;
+            }
+            .logo_fold {
+                display: block;
+                height: 60px;
+                width: 45px;
+            }
+        }
+    }
+
+    .dashIconFold img {
+        max-width: 40px;
+    }
+
+    .dash_header {
+        height: 60px;
+    }
+}

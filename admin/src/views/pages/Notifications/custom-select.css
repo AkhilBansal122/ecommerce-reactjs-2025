@@ -1,0 +1,89 @@
+/* custom-select.css */
+
+.custom-multi-select {
+    position: relative;
+    width: 100%;
+}
+
+.select-button {
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+    background: #32414a;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ccc;
+}
+
+.select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1c2a33;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 4px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.search-box-container {
+    position: relative;
+}
+
+.search-box {
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 5px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background-color: #1c2a33;
+    color: white;
+    margin: 0 10px; /* Adjust margin for padding */
+    box-sizing: border-box;
+}
+
+.select-all {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    margin: 0 10px; /* Adjust margin for padding */
+}
+
+.option-container {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.option-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option-item.selected {
+    background: #eceef0;
+    color: #020202;
+}
+
+.option-item:hover {
+    background: #f0f0f0;
+}
+
+.close-button {
+    position: absolute;
+    /* top: 5px; */
+    right: 15px;
+    border: none;
+    background: rgb(28 42 51 / 0%);
+    font-size: 30px;
+    cursor: pointer;
+    color: #f3f4f8; 
+}
+
+.close-button:hover {
+    color: #f80404;
+}

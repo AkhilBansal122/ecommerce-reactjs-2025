@@ -1,0 +1,118 @@
+@import "/src/var";
+
+.pagination-container {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+    margin: 0;
+    padding-left: 0;
+    gap: 0.5rem;
+
+    .pagination-item {
+        padding: 0 12px;
+        height: 4rem;
+        margin: auto 1px;
+        color: $warning-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0;
+        font-size: 16px;
+        min-width: 4rem;
+        &.dots:hover {
+            background-color: transparent;
+            cursor: default;
+        }
+        &:hover {
+            background-color: $warning-color;
+            color: #051312;
+            cursor: pointer;
+
+            &::before {
+                border-color: #fff;
+            }
+        }
+        &.selected {
+            background-color: $warning-color;
+            color: #051312;
+        }
+        .arrow {
+            &::before {
+                position: relative;
+                content: "";
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                border-right: 0.12em solid rgba(0, 0, 0, 0.87);
+                border-top: 0.12em solid rgba(0, 0, 0, 0.87);
+            }
+            &.left {
+                transform: rotate(-135deg) translate(0%);
+            }
+            &.right {
+                transform: rotate(45deg);
+            }
+        }
+        &.disabled {
+            pointer-events: none;
+            .arrow::before {
+                border-right: 0.12em solid rgba(0, 0, 0, 0.43);
+                border-top: 0.12em solid rgba(0, 0, 0, 0.43);
+            }
+            &:hover {
+                background-color: transparent;
+                cursor: default;
+            }
+        }
+        &:hover {
+            .arrow {
+                &::before {
+                    border-color: #fff;
+                }
+            }
+        }
+    }
+
+    .pagination-item.active_visible {
+        background-color: transparent;
+        border-radius: 0%;
+        color: $warning-color;
+        padding: 0;
+        margin: 0;
+
+        &:hover {
+            color: #fff;
+            background-color: $warning-color;
+        }
+
+        &.disabled {
+            color: #b2b2b2 ;
+        }
+    }
+}
+
+.arrow_right_text {
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
+}
+
+.pagination_number_center {
+    display: flex;
+}
+
+
+@media (max-width: 575px) {
+    .pagination-container {
+        .pagination-item {
+            padding: 0 10px;
+            height: 3rem;
+            min-width: 3rem;
+        }
+    }
+
+    .entries_text {
+        width: 100%;
+        text-align: start;
+    }
+}

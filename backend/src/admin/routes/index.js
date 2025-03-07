@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
+const fs = require('fs');
 
 const {adminverifyToken } = require("../../../middleware/authmiddleware");
 const userController = require("../controllers/userController");
@@ -17,8 +17,8 @@ const subAdminController = require("../controllers/subAdminController");
 const { loginValidation,changePasswordValidation } = require("../validation/authValidation");
 
 const {createPermissionValidation,updatePermissionValidation,deletePermissionValidation,listPermissionValidation} = require("../validation/permissionValidation");
-const {createRoleValidation,updateRoleValidation,deleteRoleValidation,listRoleValidation} = require("../validation/roleValidation");
-const { subAdminCreateValidation,listsubAdmineValidation,subAdminUpdateValidation } = require("../validation/SubAdminValidation");
+const {createRoleValidation,updateRoleValidation,deleteRoleValidation,listRoleValidation,statusChangeRoleValidation} = require("../validation/roleValidation");
+const { subAdminCreateValidation,listsubAdmineValidation,subAdminUpdateValidation,statusChanngeSubAdminValidation } = require("../validation/SubAdminValidation");
 const { createCategoryValidation, updateCategoryValidation, listCategoryValidation,statusChanngeCategoryValidation } = require("../validation/categoryValidation");
 const { createSubCategoryValidation, updateSubCategoryValidation, listSubCategoryValidation,statusChangeSubCategoryValidation } = require("../validation/subCategoryValidation");
 const { createProductValidation, updateProductValidation,activeSubCategoryByCategoryIdValidation, listProductValidation,statusChangeProductValidation } = require("../validation/productValidation");
@@ -52,6 +52,7 @@ router.get("/getProfile",adminverifyToken,userController.getProfile);
 router.post("/change-password",adminverifyToken,changePasswordValidation,userController.changePassword);
 router.get('/rolebyPermission',adminverifyToken,userController.rolebyPermission);
 
+
 //Permission management
 router.post("/permission-create",adminverifyToken,createPermissionValidation,permissionController.create);
 router.put("/permission-update",adminverifyToken,updatePermissionValidation,permissionController.update);
@@ -66,12 +67,13 @@ router.put("/role-update",adminverifyToken,updateRoleValidation,roleController.u
 router.delete("/role-delete",adminverifyToken,deleteRoleValidation,roleController.delete);
 router.post("/role-list",adminverifyToken,listRoleValidation,roleController.list);
 router.get("/active-role",adminverifyToken,roleController.activeRole);
+router.put("/role-statusChange",adminverifyToken,statusChangeRoleValidation,roleController.statusChangeRole);
 
 //Sub Admin management
 router.post("/subadmin-create",adminverifyToken,subAdminCreateValidation,subAdminController.create);
 router.post("/subadmin-list",adminverifyToken,listsubAdmineValidation,subAdminController.list);
 router.put("/subadmin-update",adminverifyToken,subAdminUpdateValidation,subAdminController.update);
-router.put("/subadmin-statusChange",adminverifyToken,subAdminController.statusChange);
+router.put("/subadmin-statusChange",adminverifyToken,statusChanngeSubAdminValidation,subAdminController.statusChange);
 
 
 //Country 
@@ -99,14 +101,13 @@ router.get("/active-sub-category",adminverifyToken,subCategoryController.activeS
 router.put("/sub-category-statusChange",adminverifyToken,statusChangeSubCategoryValidation,subCategoryController.statusChangeSubCategory);
 
 //Product Management
-router.post("/product-create",adminverifyToken,createProductValidation,productController.create);
-router.put("/product-update",adminverifyToken,updateProductValidation,productController.update);
+router.post("/product-create",adminverifyToken,upload.single("image"),productController.create);
+router.post("/product-update",adminverifyToken,upload.single("image"),productController.update);
 router.post("/product-list",adminverifyToken,listProductValidation,productController.list);
 router.get("/active-product",adminverifyToken,productController.activeProduct);
 router.post("/active-subCategoryByCategoryId",adminverifyToken,activeSubCategoryByCategoryIdValidation,productController.activeSubCategoryByCategoryId);
 router.post("/product-statusChange",adminverifyToken,statusChangeProductValidation,productController.statusChangeProduct);
 
 //Product image
-router.post("/product-image-create",adminverifyToken,upload.any(),productImageController.create);
-
+router.post("/product-image-create", adminverifyToken, upload.any('image'), productImageController.create);
 module.exports = router;

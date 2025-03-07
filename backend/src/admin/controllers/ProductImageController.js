@@ -1,7 +1,7 @@
 const express = require("express");
 const { successResponse, alreadyExistsResponse, noRecordFoundResponse, serverErrorResponse,generateSlug } = require("../../../Helper/helper");
 const ProductImageModel = require("../../../Schema/ProductImageSchema");
-const productModel = require("../../../Schema/ProductSchema");
+const ProductModel = require("../../../Schema/ProductSchema");
 const mongoose = require('mongoose');
 const formidable = require('formidable');
 const path = require('path');
@@ -12,67 +12,67 @@ module.exports = {
     
     create: async (req, res) => {
         try {
-          const { product_id, primary_image, secondary_image } = req.body;
-          const files = req.files;
-      
-          // Check if product ID is provided
-          if (!product_id) {
-            return res.status(400).json({ error: "Product ID is required" });
-          }
-      
-          // Check if files were uploaded
-          if (!files || files.length === 0) {
-            return res.status(400).json({ error: "Please select a product image" });
-          }
-      
-          // Handle the uploaded file
-          const file = files[0]; // Assuming only one file is uploaded at a time
-      
-          // Generate a random file name using timestamp and random number
-          const randomFileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-      
-          // Get the file extension
-          const fileExtension = path.extname(file.originalname);
-      
-          // Create the new file name
-          const newFileName = `${randomFileName}${fileExtension}`;
-      
-          // Set the upload directory
-          const uploadDir = path.join(__dirname, '../../../public/uploads/product_image');
-      
-          // Create directory if it doesn't exist
-          if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-          }
-      
-          // Create the full file path for saving the file
-          const filePath = path.join(uploadDir, newFileName);
-      
-          // Move the file to the upload directory
-          fs.rename(file.path, filePath, async (err) => {
-            if (err) {
-              return res.status(500).json({ error: 'Error saving the file', details: err.message });
+            const { product_id } = req.body;
+            const files = req.files;
+            // Check if product ID is provided
+            if (!product_id) {
+              return res.status(400).json({ error: "Product ID is required" });
             }
-      
-            try {
-              // Insert into the database after the file is successfully moved
-              await ProductImageModel.create({
-                product_id,
-                image: `uploads/product_image/${newFileName}`, // Save the relative path to the image
-                primary_image: primary_image || false,
-                secondary_image: secondary_image || false,
-                isActive: true
-              });
-      
-              // Return success response
-              return successResponse(res, "File uploaded and data saved successfully.");
+        
+            // Check if files were uploaded
+            if (!files || files.length === 0) {
+              return res.status(400).json({ error: "Please select a product image" });
+            }
+            checkProduct = await ProductModel.findOne({ _id: product_id });
+            if(!checkProduct){
+               return  noRecordFoundResponse([],"No Record Found");
+            }
 
-            } catch (dbError) {
-              // Handle database errors
-              return res.status(500).json({ error: 'Database Error', details: dbError.message });
-            }
-          });
-      
+            if (files && files.length > 0) {
+              // Loop through all the uploaded files
+              for (const file of files) {
+                  const randomFileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+                  const fileExtension = path.extname(file.originalname);
+                  const newFileName = `${randomFileName}${fileExtension}`;
+            
+                  const uploadDir = path.join(__dirname, '../../../public/uploads/product_images');
+                  const filePath = path.join(uploadDir, newFileName);
+            
+                  // Create directory if it doesn't exist
+                  if (!fs.existsSync(uploadDir)) {
+                      fs.mkdirSync(uploadDir, { recursive: true });
+                  }
+            
+                  // Move the uploaded file to the correct location
+                  await new Promise((resolve, reject) => {
+                      fs.rename(file.path, filePath, (err) => {
+                          if (err) {
+                              return reject(err);
+                          }
+                          resolve();
+                      });
+                  });
+            
+                  // Store each uploaded image in the product's image array and save to database
+                  await ProductImageModel.create({
+                      product_id,
+                      image: `uploads/product_images/${newFileName}`,
+                      secondary_image: true,
+                      isActive: true
+                  });
+              }
+          
+              // Once all files have been uploaded and inserted successfully
+              return res.status(200).json({
+                  success: true,
+                  message: 'All files uploaded and inserted successfully!'
+              });
+          } else {
+              return res.status(400).json({
+                  success: false,
+                  message: 'No files were uploaded.'
+              });
+          }
         } catch (error) {
           return res.status(500).json({ error: 'Internal Server Error', details: error.message });
         }

@@ -14,6 +14,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    organization: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true,
@@ -27,7 +31,31 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    country_code2:{
+        type:String,
+        required:true
+    },
     phone_no: {
+        type: String,
+        required: true
+    },
+    alter_no: {
+        type: String,
+        required: true
+    },
+    postal_code:{
+        type:String,
+        required:true
+    },
+    gst_no:{
+        type: String,
+        required: true
+    },
+    gender:{
+        type: String,
+        required: true
+    },
+    address:{
         type: String,
         required: true
     },

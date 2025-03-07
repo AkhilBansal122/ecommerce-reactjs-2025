@@ -104,6 +104,29 @@ module.exports = {
     
         validationRequest(req, res, next, schema);
     },
+    statusChangeRoleValidation: async (req, res, next) => {
+        // Define the validation schema using Joi
+        const schema = Joi.object({
+            id: Joi.string()
+                .length(24) // Ensures the id is exactly 24 characters long (for MongoDB ObjectId)
+                .hex() // Ensures the id contains only hexadecimal characters
+                .required()
+                .messages({
+                    'string.length': 'ID must be a 24-character long string.',
+                    'string.hex': 'ID must be a valid hexadecimal string.',
+                    'any.required': 'ID is required.',
+                }),
+                isActive: Joi.boolean()
+                .required() // Ensures isActive is required and must be a boolean value
+                .messages({
+                    'any.required': 'isActive is required.',
+                    'boolean.base': 'isActive must be a boolean value.',
+                })  
+        });
+
+    
+        validationRequest(req, res, next, schema);
+    }
     
     
     

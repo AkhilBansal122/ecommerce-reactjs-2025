@@ -3,6 +3,8 @@ require('dotenv').config();
 const RoleModel = require("../../../Schema/RoleSchema");
 const PermissionModel = require("../../../Schema/PermissionSchema");
 const RolePermissionModel = require("../../../Schema/RolePermissionSchema");
+const UserModel = require("../../../Schema/UserSchema");
+
 module.exports = {
 
     create: async (req, res) => {
@@ -60,7 +62,7 @@ module.exports = {
             await RolePermissionModel.insertMany(rolePermissions);
 
             // Return success response
-            return successResponse(res, "Role and permissions updated successfully.", role);
+            return successResponse(res, "Role and role updated successfully.", role);
         } catch (error) {
             return serverErrorResponse(res, "Internal Server Error", error.message);
         }
@@ -97,9 +99,10 @@ module.exports = {
             const totalCount = await RoleModel.countDocuments();
 
             // Retrieve roles with pagination
-            const roles = await RoleModel.find()
+            const roles = await RoleModel.find({ name: { $ne: "Admin" } }) // Exclude roles with name "Admin"
                 .skip((page - 1) * limit) // Skip based on the page and limit
-                .limit(limit) // Limit the number of results per page
+                .limit(limit); // Limit the number of results per page
+
 
             // Retrieve the associated permissions for each role
             const rolesWithPermissions = await Promise.all(
@@ -122,7 +125,7 @@ module.exports = {
 
             return res.status(200).json({
                 status: true,
-                message: "fetch Permission Successfully",
+                message: "fetch Role Successfully",
                 data: rolesWithPermissions,
                 pagination: {
                     page,
@@ -141,17 +144,46 @@ module.exports = {
                 isActive: true,
                 name: { $ne: 'Admin' } // Select roles where name is not 'Admin'
             }).select('-__v'); // Exclude the __v field
-            
-            if (getRole.length >0) {
-              return  successResponse(res, "Active Role Fetch", getRole);
+
+            if (getRole.length > 0) {
+                return successResponse(res, "Active Role Fetch", getRole);
             }
             else {
-                return   noRecordFoundResponse(res, "No Record Found", []);
+                return noRecordFoundResponse(res, "No Record Found", []);
 
             }
         } catch (error) {
             return serverErrorResponse(res, "Internal Server Error", error.message);
         }
 
-    }
+    },
+    statusChangeRole: async (req, res) => {
+        try {
+            const { id, isActive } = req.body;
+
+            // Ensure the ID is valid and the role exists
+            const role = await RoleModel.findOne({ _id: id });
+            if (!role) {
+                return noRecordFoundResponse(res, "Role not found.");
+            }
+
+            // Update the role's isActive status
+            role.isActive = isActive;
+            await role.save();
+
+            // Find all users associated with this role
+            const getUsersRole = await UserModel.find({ role_id: id });
+            if (getUsersRole && getUsersRole.length > 0) {
+                // Update isActive status for each user associated with the role
+                for (const userRole of getUsersRole) {
+                    userRole.isActive = isActive;
+                    await userRole.save();
+                }
+            }
+            // Return success response
+            return successResponse(res, "Role Status changed successfully.", []);
+        } catch (error) {
+            return serverErrorResponse(res, "Internal Server Error", error.message);
+        }
+    },
 };

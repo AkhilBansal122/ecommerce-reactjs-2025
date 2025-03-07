@@ -26,6 +26,11 @@ const ProductSchema = new mongoose.Schema({
         required: false,
         default: null
     },
+    image: {
+        type: String,
+        required: false,
+        default: null
+    },
     price: {
         type: Number,
         required: true, // Price is mandatory

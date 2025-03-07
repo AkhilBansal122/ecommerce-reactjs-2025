@@ -1,0 +1,437 @@
+@import "../../../var.scss";
+
+$color_1: #fff;
+
+.loginBg {
+    min-height: 100vh;
+    width: 100%;
+    background: #051312;
+}
+.loginRow {
+    display: flex;
+    margin: 0;
+    flex-wrap: wrap;
+    min-height: 100vh;
+    .loginCol_1 {
+        flex: 0 0 65%;
+        max-width: 65%;
+        width: 100%;
+        padding: 50px 15px;
+        position: relative;
+        z-index: 1;
+        .tringleSparkle {
+            display: inline-block;
+            width: 0;
+            border-bottom: 35px solid $warning-color;
+            border-left: 13px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 0;
+            rotate: 45deg;
+            position: absolute;
+            bottom: 15%;
+            left: 30%;
+            z-index: -1;
+            &.tringleSparkle_2 {
+                bottom: unset;
+                left: 15%;
+                top: 15%;
+                rotate: 110deg;
+                scale: 1.3;
+                border-bottom: 35px solid $warning-color;
+            }
+            &.tringleSparkle_3 {
+                bottom: unset;
+                left: 80%;
+                top: 35%;
+                rotate: 220deg;
+                scale: 0.7;
+                border-bottom: 35px solid $warning-color;
+            }
+        }
+        .tringleLongSparkle {
+            display: inline-block;
+            width: 0;
+            border-bottom: 225px solid $theme-color;
+            border-left: 5px solid transparent;
+            border-right: 13px solid transparent;
+            border-top: 0;
+            rotate: 50deg;
+            position: absolute;
+            bottom: 20px;
+            left: -9px;
+            transform: skewY(46deg);
+            transform-origin: bottom;
+            z-index: -1;
+            &.longSparke_2 {
+                top: 25%;
+                bottom: unset;
+                transform-origin: top;
+                right: -7px;
+                left: unset;
+                border-top: 170px solid $warning-color;
+                border-left: 5px solid transparent;
+                border-right: 9px solid transparent;
+                border-bottom: 0;
+                rotate: 45deg;
+            }
+        }
+        .dotSparkle {
+            display: inline-block;
+            position: absolute;
+            top: -110px;
+            right: 0;
+            rotate: 180deg;
+            opacity: 0.4;
+            scale: 1.5;
+            translate: -25%;
+            z-index: -1;
+        }
+    }
+    .loginCol_2 {
+        flex: 0 0 35%;
+        max-width: 35%;
+        width: 100%;
+        padding: 0 15px;
+        background: #638484;
+    }
+}
+.loginFormBlock {
+    max-width: 450px;
+    margin: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .loginFormMiddle {
+        border-radius: 2rem;
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        max-width: 450px;
+        padding: 3rem;
+        background: #638484;
+    }
+    .loginLogo {
+        display: none;
+        img {
+            max-width: 200px;
+        }
+    }
+}
+
+.loginForm {
+    // margin-top: 60px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    form {
+        margin-bottom: 20px;
+    }
+    .loginTitle {
+        font-size: 40px;
+        font-weight: 700;
+        color: $color_1;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    .loginDesciription {
+        font-size: 16px;
+        margin-bottom: 30px;
+        text-align: center;
+        text-transform: capitalize;
+    }
+}
+.rememFlex {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    label {
+        cursor: pointer;
+        user-select: none;
+    }
+    a {
+        display: inline-block;
+        margin-left: auto;
+        font-size: 15px;
+        color: $color_1;
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+.dontHaveLogin {
+    text-align: center;
+    margin-top: 15px;
+    a {
+        color: $theme-color;
+        display: inline-block;
+    }
+}
+.sliderLoginBlock {
+    padding: 50px;
+    min-height: 100vh;
+    gap: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+
+    .swiper {
+        max-width: 100%;
+        margin: auto;
+    }
+}
+.passInstructor {
+    font-size: 15px;
+    margin-bottom: 30px;
+    margin-top: -10px;
+}
+
+.successFulBlock {
+    text-align: center;
+    .successfulIcon {
+        margin: auto;
+        width: 110px;
+        min-width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $theme-color;
+        color: $scondary-color;
+        font-size: 6rem;
+        margin-bottom: 25px;
+    }
+    h4 {
+        font-size: 25px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+    p {
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+}
+
+.inputGroupVerify {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    input {
+        width: 25px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 21px;
+        text-align: center;
+        color: $theme-color;
+        box-shadow: none;
+        outline: 0;
+        background: transparent;
+        border: 0;
+        height: 31px;
+
+        &::placeholder {
+            font-size: 16px;
+            line-height: 21px;
+            text-align: center;
+            color: $theme-color;
+        }
+    }
+}
+
+.show_password_tag {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+
+    &.change_password {
+        .show-hide-password {
+            top: 18px;
+            transform: unset;
+        }
+        .top60{
+            top: 60% !important; 
+        }
+    }
+
+    .show-hide-password {
+        position: absolute;
+        top: 20px;
+        right: 2rem;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &.common_password,
+    &.change_password {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+.forgot_pass {
+    margin-left: auto;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    color: #ffff;
+}
+
+.resendLine {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    margin-top: 10px;
+    text-align: center;
+    color: #fff;
+}
+
+.countryDropdown {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+
+    .dropdown-toggle {
+        background: transparent;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: none;
+        outline: 0;
+        &::after {
+            display: none;
+        }
+        &::before {
+            content: "";
+            width: 3px;
+            height: 35px;
+            background: $theme-color;
+            position: absolute;
+            right: -13px;
+        }
+    }
+}
+
+.countryDropParent.form-floating {
+    .form-control {
+        padding-left: 60px;
+    }
+    label {
+        padding-left: 60px;
+    }
+}
+
+.countryDropParent.form-floating > .form-control-plaintext ~ label,
+.countryDropParent.form-floating > .form-control:focus ~ label,
+.countryDropParent.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.countryDropParent.form-floating > .form-select ~ label {
+    padding-left: 70px;
+}
+
+.countryDropdown {
+    .dropdown-menu {
+        padding: 0;
+        min-width: 38px;
+        overflow: hidden;
+        .dropdown-item {
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:focus {
+                background: transparent;
+            }
+        }
+    }
+}
+
+// media query
+
+@media (max-width: 1199.98px) {
+    .loginRow {
+        .loginCol_2 {
+            flex: 0 0 40%;
+            max-width: 40%;
+            position: relative;
+        }
+        .loginCol_1 {
+            flex: 0 0 60%;
+            max-width: 60%;
+            position: relative;
+        }
+        .sliderLoginBlock {
+            padding: 50px 25px;
+        }
+    }
+}
+
+@media (max-width: 991.98px) {
+    .sliderLoginBlock {
+        padding: 0;
+    }
+    .loginRow {
+        .loginCol_2 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            position: relative;
+        }
+        .loginCol_1 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            position: relative;
+        }
+        .sliderLoginBlock {
+            padding: 50px 25px;
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .loginRow {
+        .loginCol_2 {
+            display: none;
+        }
+        .loginCol_1 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            .dotSparkle {
+                scale: 1;
+                translate: 0;
+            }
+            .tringleLongSparkle {
+                border-bottom: 95px solid $theme-color;
+                &.longSparke_2 {
+                    border-top: 95px solid $theme-color;
+                    rotate: 45deg;
+                    top: 35%;
+                }
+            }
+        }
+        .loginFormBlock {
+            .loginLogo {
+                display: block;
+                text-align: center;
+            }
+        }
+    }
+
+    .loginFormBlock {
+        row-gap: 5rem;
+    }
+    .top60
+    {
+        top:60% !important;
+    }
+}
