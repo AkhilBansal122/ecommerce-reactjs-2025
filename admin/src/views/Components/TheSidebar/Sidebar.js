@@ -20,7 +20,7 @@ import { resetSubAdminAction } from '../../../features/subAdmin';
 import { resetSubCategoriesList } from '../../../features/subCategorySlice';
 import {resetMainCategoryList} from "../../../features/mainCategorySlice";
 import { MdOutlineNotifications } from 'react-icons/md';
-
+import { resetAttributeListAction } from '../../../features/attributeSlice';
 function CustomToggle({ children, eventKey, callback }) {
     const { activeEventKey } = useContext(AccordionContext);
     const decoratedOnClick = useAccordionButton(eventKey, () =>
@@ -42,7 +42,6 @@ const SideBar = ({ handleNavLinkClick }) => {
     const dispatch = useDispatch();
     const { login } = useSelector((state) => state?.auth);
     const ModuleAccess = Object.keys(login)?.length > 0 ? login.permissions ? login.permissions : AllModuleAccessArr() : AllModuleAccessArr()
-
 
     return (
         <>
@@ -143,6 +142,27 @@ const SideBar = ({ handleNavLinkClick }) => {
                                         )}
                                         {ModuleAccess.includes("Sub Category Management") && (
                                             <NavLink onClick={()=>dispatch(resetSubCategoriesList())} to="/admin/sub-categories/list">Sub Category</NavLink>
+                                        )}
+                                    </>
+                                </Accordion.Collapse>
+                            </div>
+                        )}
+                        {(ModuleAccess.includes("Attributes Management") || ModuleAccess.includes("Attribute Values Management")) && (
+                            <div className="dash_nav_item">
+                                <CustomToggle eventKey="8">
+                                    <span className="icon_holder">
+                                        <BiCategoryAlt />
+                                    </span>
+                                    <span className="title_dash_nav">Attribute Manager</span>
+                                    <span className="arrowIconSubmenu"></span>
+                                </CustomToggle>
+                                <Accordion.Collapse eventKey="8" className='subMenuSide'>
+                                    <>
+                                    {ModuleAccess.includes("Attributes Management") && (
+                                            <NavLink onClick={()=>dispatch(resetAttributeListAction())}  to="/admin/attribute/list">Attribute</NavLink>
+                                        )}
+                                        {ModuleAccess.includes("Attribute Values Management") && (
+                                            <NavLink onClick={()=>dispatch(resetCategoryList())}  to="/admin/attribute-value/list">Attribute Values</NavLink>
                                         )}
                                     </>
                                 </Accordion.Collapse>

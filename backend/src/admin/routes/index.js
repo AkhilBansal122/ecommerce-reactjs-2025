@@ -8,6 +8,8 @@ const userController = require("../controllers/userController");
 const permissionController = require("../controllers/permissionController");
 const mainCategoryController = require("../controllers/mainCategoryController");
 const categoryController = require("../controllers/categoryController");
+const attributeController = require("../controllers/attributeController");
+
 const subCategoryController = require("../controllers/SubCategoryController");
 const productController = require("../controllers/ProductsController");
 
@@ -16,6 +18,7 @@ const productImageController = require("../controllers/ProductImageController");
 const roleController = require("../controllers/roleController");
 const subAdminController = require("../controllers/subAdminController");
 const { loginValidation,changePasswordValidation } = require("../validation/authValidation");
+const attributeValueController = require("../controllers/attributeValueController");
 
 const {createPermissionValidation,updatePermissionValidation,deletePermissionValidation,listPermissionValidation} = require("../validation/permissionValidation");
 const {createRoleValidation,updateRoleValidation,deleteRoleValidation,listRoleValidation,statusChangeRoleValidation} = require("../validation/roleValidation");
@@ -24,6 +27,8 @@ const { createCategoryValidation, updateCategoryValidation, listCategoryValidati
 const { createSubCategoryValidation, updateSubCategoryValidation, listSubCategoryValidation,statusChangeSubCategoryValidation } = require("../validation/subCategoryValidation");
 const { createProductValidation, updateProductValidation,activeSubCategoryByCategoryIdValidation, listProductValidation,statusChangeProductValidation } = require("../validation/productValidation");
 const { createMainCategoryValidation, statusMainChangeCategoryValidation, listMainCategoryValidation, updateMainCategoryValidation } = require("../validation/mainCategoryValidation");
+const { createAttributeValidation, updateAttributeValidation, listAttributeValidation, statusChangeAttributeValidation } = require("../validation/attributeValidation");
+const { statusChanngeAttributeValueValidation, listAttributeValueValidation, updateAttributeValueValidation, createAttributeValueValidation } = require("../validation/attributeValueValidation");
 
 const router = express.Router();
 
@@ -112,6 +117,21 @@ router.post("/sub-category-list",adminverifyToken,listSubCategoryValidation,subC
 router.get("/active-sub-category",adminverifyToken,subCategoryController.activeSubCategory);
 router.put("/sub-category-statusChange",adminverifyToken,statusChangeSubCategoryValidation,subCategoryController.statusChangeSubCategory);
 router.delete('/sub-categories', adminverifyToken,subCategoryController.delete);
+
+
+//Attribute
+router.post("/attribute-create",adminverifyToken,createAttributeValidation,attributeController.create);
+router.put("/attribute-update",adminverifyToken,updateAttributeValidation,attributeController.update);
+router.post("/attribute-list",adminverifyToken,listAttributeValidation,attributeController.list);
+router.get("/active-attribute",adminverifyToken,attributeController.activeAttrubute);
+router.put("/attribute-statusChange",adminverifyToken,statusChangeAttributeValidation,attributeController.statusChangeAttribute);
+
+//Attribute value
+router.post("/attribute-value-create",adminverifyToken,createAttributeValueValidation,attributeValueController.create);
+router.post("/attribute-value-list",adminverifyToken,listAttributeValueValidation,attributeValueController.list);
+router.put("/attribute-value-update",adminverifyToken,updateAttributeValueValidation,attributeValueController.update);
+router.put("/attribute-value-statusChange",adminverifyToken,statusChanngeAttributeValueValidation,attributeValueController.statusChangeAttributeValue);
+router.post("/active-attribute-value",adminverifyToken,attributeValueController.getActiveAttributeValueByAttributeId);
 
 //Product Management
 router.post("/product-create",adminverifyToken,upload.single("image"),productController.create);

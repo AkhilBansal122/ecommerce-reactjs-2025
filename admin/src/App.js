@@ -63,6 +63,9 @@ import CategoriesEdit from "./views/pages/Category/Edit";
 import SubCategoriesList from './views/pages/SubCategory/List';
 import SubCategoriesAdd from "./views/pages/SubCategory/Add";
 import SubCategoriesEdit from "./views/pages/SubCategory/Edit";
+import AttributeList from './views/pages/Attribute/List';
+import AttributeAdd from './views/pages/Attribute/Add';
+import AttributeEdit from './views/pages/Attribute/Edit';
 var CryptoJS = require("crypto-js");
 
 
@@ -106,7 +109,8 @@ function App() {
                         <Route path="main-categories/list" index element={<MainCategoriesList />} />
                         <Route path="main-categories/add" index element={<MainCategoriesAdd />} />
                         <Route path="main-categories/edit/:id" index element={<MainCategoriesEdit />} />
-
+                                           
+                                           
                         {/* Categories MAnagement*/}
                         <Route path="categories/list" index element={<CategoriesList />} />
                         <Route path="categories/add" index element={<CategoriesAdd />} />
@@ -116,7 +120,12 @@ function App() {
                         <Route path="sub-categories/list" index element={<SubCategoriesList />} />
                         <Route path="sub-categories/add" index element={<SubCategoriesAdd />} />
                         <Route path="sub-categories/edit/:id" index element={<SubCategoriesEdit />} />
-
+                        
+                        {/*Attribute MAnagement*/}
+                        <Route path="attribute/list" index element={<AttributeList />} />
+                        <Route path="attribute/add" index element={<AttributeAdd />} />
+                        <Route path="attribute/edit/:id" index element={<AttributeEdit />} />
+                      
                         {/* SubAdmin Management */}
                         <Route path='user/list' index element={<SubAdminList />} />
                         <Route path='user/add' index element={<SubAdminAdd />} />

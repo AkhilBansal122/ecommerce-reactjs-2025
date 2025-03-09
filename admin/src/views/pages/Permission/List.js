@@ -134,7 +134,7 @@ const PermissionList = () => {
 
           <Table responsive className="themeTable">
             <TableHead data={tableHeader} />
-            <tbody>
+            {/* <tbody>
               {
                 loading ?
                   <>
@@ -200,6 +200,69 @@ const PermissionList = () => {
                   </>
               }
 
+            </tbody> */}
+            <tbody>
+              {!loading ? (
+                // Show loading state
+                <tr>
+                  <td className="text-center" colSpan={headerLength}>
+                    <h2>Loading...</h2>
+                  </td>
+                </tr>
+              ) : (
+                // When not loading, check if data exists
+                <>
+                  {paginationList?.length > 0 ? (
+                    // Render the data rows
+                    paginationList.map((value, index) => (
+                      <tr key={index}>
+                        <td>
+                          {(currentPage - 1) * Number(pageSize) + (index + 1)}
+                        </td>
+
+                        <td>{value?.name}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className={`table_btn ${value.isActive ? "active" : "inactive"}`}
+                            onClick={() => handleStatusUpdate(value._id, value.isActive)}
+                          >
+                            {value?.isActive ? "Active" : "Inactive"}
+                          </button>
+                        </td>
+                        <td>
+                          <div className="btnTableGroup">ModuleAccess-->
+                            <button
+                              type="button"
+                              onClick={() =>
+                                navigate(`/admin/permissions/edit/${value._id}`, {
+                                  state: { ...value },
+                                })
+                              }
+                            >
+                              <MdModeEditOutline />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => permissionDeleteModal(value._id)}
+                              >
+                                <BsTrashFill />
+                              </button>
+
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    // Show NoDataFound if no data is available
+                    <tr>
+                      <td colSpan={headerLength} className="not_found_data_td">
+                        <NoDataFound />
+                      </td>
+                    </tr>
+                  )}
+                </>
+              )}
             </tbody>
           </Table>
           {paginationList?.length > 0 ? (

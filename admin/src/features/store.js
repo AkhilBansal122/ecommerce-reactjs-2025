@@ -6,6 +6,8 @@ import subAdminSlice from "./subAdmin";
 import categorySlice from "./categorySlice";
 import subCategorySlice from "./subCategorySlice";
 import mainCategorySlice from "./mainCategorySlice";
+import attributeSlice from "./attributeSlice";
+
 export const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -14,6 +16,7 @@ export const store = configureStore({
     subAdmin:subAdminSlice,
     categories:categorySlice,
     subCategory:subCategorySlice,
-    mainCategory:mainCategorySlice
+    mainCategory:mainCategorySlice,
+    attribute:attributeSlice
   },
 });
