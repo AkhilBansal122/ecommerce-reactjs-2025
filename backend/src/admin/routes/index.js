@@ -6,6 +6,7 @@ const fs = require('fs');
 const {adminverifyToken } = require("../../../middleware/authmiddleware");
 const userController = require("../controllers/userController");
 const permissionController = require("../controllers/permissionController");
+const mainCategoryController = require("../controllers/mainCategoryController");
 const categoryController = require("../controllers/categoryController");
 const subCategoryController = require("../controllers/SubCategoryController");
 const productController = require("../controllers/ProductsController");
@@ -22,6 +23,7 @@ const { subAdminCreateValidation,listsubAdmineValidation,subAdminUpdateValidatio
 const { createCategoryValidation, updateCategoryValidation, listCategoryValidation,statusChanngeCategoryValidation } = require("../validation/categoryValidation");
 const { createSubCategoryValidation, updateSubCategoryValidation, listSubCategoryValidation,statusChangeSubCategoryValidation } = require("../validation/subCategoryValidation");
 const { createProductValidation, updateProductValidation,activeSubCategoryByCategoryIdValidation, listProductValidation,statusChangeProductValidation } = require("../validation/productValidation");
+const { createMainCategoryValidation, statusMainChangeCategoryValidation, listMainCategoryValidation, updateMainCategoryValidation } = require("../validation/mainCategoryValidation");
 
 const router = express.Router();
 
@@ -86,11 +88,21 @@ router.get("/active-city/:country_id/:state_id", adminverifyToken, userControlle
 router.post('/logout', adminverifyToken,userController.logout);
 
 
-//Caregory management
+//Main Caregory management
+router.post("/main-category-create",adminverifyToken,createMainCategoryValidation,mainCategoryController.create);
+router.put("/main-category-update",adminverifyToken,updateMainCategoryValidation,mainCategoryController.update);
+router.post("/main-category-list",adminverifyToken,listMainCategoryValidation,mainCategoryController.list);
+router.get("/active-main-category",adminverifyToken,mainCategoryController.activeMainCategory);
+router.put("/main-category-statusChange",adminverifyToken,statusMainChangeCategoryValidation,mainCategoryController.statusChangeCategory);
+router.delete('/main-categories', adminverifyToken,mainCategoryController.delete);
+router.post('/categories/:id/restore', adminverifyToken,mainCategoryController.restoreCategory);
+
 router.post("/category-create",adminverifyToken,createCategoryValidation,categoryController.create);
 router.put("/category-update",adminverifyToken,updateCategoryValidation,categoryController.update);
 router.post("/category-list",adminverifyToken,listCategoryValidation,categoryController.list);
-router.get("/active-category",adminverifyToken,categoryController.activeCategory);
+router.delete('/categories', adminverifyToken,categoryController.delete);
+
+ router.post("/getActiveCategoryByParentId",adminverifyToken,categoryController.getActiveCategoryByParentId);
 router.put("/category-statusChange",adminverifyToken,statusChanngeCategoryValidation,categoryController.statusChangeCategory);
 
 //Sub Caregory management
@@ -99,6 +111,7 @@ router.put("/sub-category-update",adminverifyToken,updateSubCategoryValidation,s
 router.post("/sub-category-list",adminverifyToken,listSubCategoryValidation,subCategoryController.list);
 router.get("/active-sub-category",adminverifyToken,subCategoryController.activeSubCategory);
 router.put("/sub-category-statusChange",adminverifyToken,statusChangeSubCategoryValidation,subCategoryController.statusChangeSubCategory);
+router.delete('/sub-categories', adminverifyToken,subCategoryController.delete);
 
 //Product Management
 router.post("/product-create",adminverifyToken,upload.single("image"),productController.create);

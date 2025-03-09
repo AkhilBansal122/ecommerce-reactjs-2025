@@ -30,7 +30,6 @@ const SubAdminEdit = () => {
         const formikFrom = useFormikContext();
         useEffect(() => {
             if (!formDataSaved && state) {
-                console.log("Setting initial values from state:", state);
                 setSelectCountry(state?.country_id);
                 setSelectState(state?.state_id);
                 formikFrom.setValues({
@@ -75,7 +74,6 @@ const SubAdminEdit = () => {
 
     // Fetch cities when state is selected
     useEffect(() => {
-        console.log("selectCountry-->,", selectCountry, "selectState", selectState);
         if (selectCountry && selectState) {
             dispatch(activeCityListAction(selectCountry, selectState));
         }

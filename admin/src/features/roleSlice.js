@@ -43,10 +43,13 @@ const roleSlice = createSlice({
            state.loading = action.payload.loading;
            state.activePermissionList = action.payload.data;
         },
+        resetRoleList(){
+        return initialState;
+        }
     }
 });
 export default roleSlice.reducer;
-export const { fetchDataLoading, fetchApiFailure, fetchRoleListSuccess,fetchActivePermissionListSuccess, setPage, setPageSize } = roleSlice.actions;
+export const { fetchDataLoading, fetchApiFailure, fetchRoleListSuccess,fetchActivePermissionListSuccess, setPage,resetRoleList, setPageSize } = roleSlice.actions;
 
 export const AddRoleAction = (value, callBack) => async (dispatch) => {
     try {

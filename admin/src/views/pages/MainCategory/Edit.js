@@ -1,39 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css';
-import { Form, Formik, useFormikContext, Field, ErrorMessage } from 'formik';
+import {  Form, Formik, useFormikContext } from 'formik';
 import * as Yup from "yup";
 import { FieldText } from '../../Components/InputText/InputText';
 import { Button } from '../../Components/Button/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateCategoriesAction } from '../../../features/categorySlice';
-import TextErrorMsg from '../../Components/InputText/TextErrorMsg';
-import { activeMainCategoryListAction } from '../../../features/mainCategorySlice';
-import { ToastOverSuccess } from '../../../common/Toast/ToastOver';
+import { useDispatch } from 'react-redux';
+import { updateMainCategoriesAction } from '../../../features/mainCategorySlice';
 
 
-const CategoriesEdit = () => {
+const MainCategoriesEdit = () => {
     const { state } = useLocation();
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false)
     const [formDataSaved, setFormDataSaved] = useState(false);
     const dispatch = useDispatch();
-    const { activeMainCategoryList } = useSelector((state) => state.mainCategory);
-
-
-    useEffect(() => {
-        dispatch(activeMainCategoryListAction());
-    }, [dispatch])
-
     const FormikFromFunc = () => {
         const formikFrom = useFormikContext();
         useEffect(() => {
             if (!formDataSaved && state) {
-
                 formikFrom.setValues({
                     id: state?._id,
                     name: state?.name,
-                    main_categories_id: state?.parentMainCategory?._id,
                     isActive: state?.isActive || false
                 });
                 setFormDataSaved(true);
@@ -44,12 +32,12 @@ const CategoriesEdit = () => {
     return (
         <div className='addLeagueBlock'>
             <div className='title_breadcrumb_section'>
-                <div className='title_page'>Edit Categories</div>
+                <div className='title_page'>Edit Main Categories</div>
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/admin/dashboard">Home</Link></li>
-                        <li className="breadcrumb-item"><Link to="/admin/categories/list">Categories list </Link></li>
-                        <li className="breadcrumb-item active" aria-current="page">Edit Categories</li>
+                        <li className="breadcrumb-item"><Link to="/admin/main-caregories/list">Main Categories list </Link></li>
+                        <li className="breadcrumb-item active" aria-current="page">Edit Main Categories</li>
                     </ol>
                 </nav>
             </div>
@@ -59,33 +47,28 @@ const CategoriesEdit = () => {
                     <div className="formAddBlock">
                         <Formik
                             initialValues={{
-                                name: "",
-                                main_categories_id: ""
+                                name: ""
                             }}
                             validationSchema={() =>
                                 Yup.object().shape({
                                     name: Yup.string().required("Name is required"),
-                                    main_categories_id: Yup.string().required("Select Main Categories is required"),
                                 })
                             }
-                            onSubmit={async (values) => {
-                                const payload = {
-                                    name: values.name,
-                                    parent_id: values?.main_categories_id,
-                                    id: values.id,
+                          onSubmit={async(values) => {
+                              const payload = {
+                                  name: values.name,
+                                  id:values.id,
                                 };
                                 setLoader(true);
-                                await dispatch(updateCategoriesAction(payload, (response) => {
-                                    if(response?.status===false){
-                                    }
-                                    else if (response?.status === true) {
-                                        navigate("/admin/categories/list");
-                                    } else {
-                                        console.error("Failed to edit categories:", response?.message);
-                                    }
-                                    setLoader(false);
-                                })());
-                            }}
+                               await  dispatch(updateMainCategoriesAction(payload, (response) => {
+                                            if (response?.status === true) {
+                                              navigate("/admin/main-categories/list");
+                                            } else {
+                                              console.error("Failed to add main categories:", response?.message);
+                                            }
+                                            setLoader(false);
+                                          })());
+                                        }}
 
                         >
                             {(formik) => {
@@ -93,26 +76,7 @@ const CategoriesEdit = () => {
                                     <Form>
                                         <FormikFromFunc />
                                         <div className="row g-3 g-md-5">
-                                            <div className="col-12 col-md-6">
-                                                <label htmlFor="main_categories_id" className="md-4" style={{ marginBottom: '10px' }}>
-                                                    Select Main Category
-                                                </label>
-                                                <Field
-                                                    as="select"
-                                                    id="main_categories_id"
-                                                    name="main_categories_id"
-                                                    className="form-control select_white"
-                                                >
-                                                    <option value="">Select Main Category</option>
-                                                    {activeMainCategoryList?.map((item) => (
-                                                        <option key={item._id} value={item._id}>
-                                                            {item.name}
-                                                        </option>
-                                                    ))}
-                                                </Field>
-                                                <ErrorMessage name="main_categories_id" component={TextErrorMsg} />
-                                            </div>
-                                            <div className="col-12 col-md-6">
+                                            <div className="col-12">
                                                 <label> Name </label>
                                                 <FieldText
                                                     name="name"
@@ -145,4 +109,4 @@ const CategoriesEdit = () => {
     )
 }
 
-export default CategoriesEdit
+export default MainCategoriesEdit

@@ -11,8 +11,15 @@ import { FiLogOut, FiUser } from "react-icons/fi";
 import { TbBrandProducthunt } from "react-icons/tb";
 import CommonModal from '../Modal/CommonModal';
 import LogoutModal from '../Modal/LogoutModal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AllModuleAccessArr } from '../../../utils/Function';
+import { resetCategoryList } from '../../../features/categorySlice';
+import { resetPermissionList } from '../../../features/permissionSlice';
+import { resetRoleList } from '../../../features/roleSlice';
+import { resetSubAdminAction } from '../../../features/subAdmin';
+import { resetSubCategoriesList } from '../../../features/subCategorySlice';
+import {resetMainCategoryList} from "../../../features/mainCategorySlice";
+import { MdOutlineNotifications } from 'react-icons/md';
 
 function CustomToggle({ children, eventKey, callback }) {
     const { activeEventKey } = useContext(AccordionContext);
@@ -32,6 +39,7 @@ function CustomToggle({ children, eventKey, callback }) {
 
 const SideBar = ({ handleNavLinkClick }) => {
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+    const dispatch = useDispatch();
     const { login } = useSelector((state) => state?.auth);
     const ModuleAccess = Object.keys(login)?.length > 0 ? login.permissions ? login.permissions : AllModuleAccessArr() : AllModuleAccessArr()
 
@@ -49,6 +57,19 @@ const SideBar = ({ handleNavLinkClick }) => {
                                 </NavLink>
                             </div>
                         }
+                         <div className="dash_nav_item">
+                            <CustomToggle eventKey="7">
+                                <span className="icon_holder"> <MdOutlineNotifications /> </span>
+                                <span className="title_dash_nav"> Admin Profile </span>
+                                <span className="arrowIconSubmenu"></span>
+                            </CustomToggle>
+                            <Accordion.Collapse eventKey="7" className='subMenuSide'>
+                                <>
+                                     <NavLink to="/admin/profile" > Profile </NavLink> 
+                                    <NavLink to="/admin/profile/change-password" > Change Password </NavLink>
+                                </>
+                            </Accordion.Collapse>
+                        </div> 
                         {(ModuleAccess.includes("Permission Management") || ModuleAccess.includes("Role Management")) && (
                             <div className="dash_nav_item">
                                 <CustomToggle eventKey="1">
@@ -61,10 +82,10 @@ const SideBar = ({ handleNavLinkClick }) => {
                                 <Accordion.Collapse eventKey="1" className='subMenuSide'>
                                     <>
                                         {ModuleAccess.includes("Permission Management") && (
-                                            <NavLink to="/admin/permission/list">Permissions</NavLink>
+                                            <NavLink onClick={()=>dispatch(resetPermissionList())} to="/admin/permission/list">Permissions</NavLink>
                                         )}
                                         {ModuleAccess.includes("Role Management") && (
-                                            <NavLink to="/admin/role/list">Role</NavLink>
+                                            <NavLink onClick={()=>resetRoleList()} to="/admin/role/list">Role</NavLink>
                                         )}
                                     </>
                                 </Accordion.Collapse>
@@ -92,7 +113,7 @@ const SideBar = ({ handleNavLinkClick }) => {
                                 <Accordion.Collapse eventKey="2" className="subMenuSide">
                                     <>
                                         {ModuleAccess.includes("User Management") && (
-                                            <NavLink to="/admin/user/list">Users</NavLink>
+                                            <NavLink onClick={()=>dispatch(resetSubAdminAction())} to="/admin/user/list">Users</NavLink>
                                         )}
                                         {ModuleAccess.includes("Customer Management") && (
                                             <NavLink to="/admin/subcategory/list">Customers</NavLink>
@@ -103,7 +124,7 @@ const SideBar = ({ handleNavLinkClick }) => {
                         )}
 
 
-                        {(ModuleAccess.includes("Category Management") || ModuleAccess.includes("Sub Category Management")) && (
+                        {(ModuleAccess.includes("Main Category Management") || ModuleAccess.includes("Category Management") || ModuleAccess.includes("Sub Category Management")) && (
                             <div className="dash_nav_item">
                                 <CustomToggle eventKey="3">
                                     <span className="icon_holder">
@@ -114,11 +135,14 @@ const SideBar = ({ handleNavLinkClick }) => {
                                 </CustomToggle>
                                 <Accordion.Collapse eventKey="3" className='subMenuSide'>
                                     <>
+                                    {ModuleAccess.includes("Main Category Management") && (
+                                            <NavLink onClick={()=>dispatch(resetMainCategoryList())}  to="/admin/main-categories/list">Main Category</NavLink>
+                                        )}
                                         {ModuleAccess.includes("Category Management") && (
-                                            <NavLink to="/admin/categories/list">Category</NavLink>
+                                            <NavLink onClick={()=>dispatch(resetCategoryList())}  to="/admin/categories/list">Category</NavLink>
                                         )}
                                         {ModuleAccess.includes("Sub Category Management") && (
-                                            <NavLink to="/admin/subcategory/list">Sub Category</NavLink>
+                                            <NavLink onClick={()=>dispatch(resetSubCategoriesList())} to="/admin/sub-categories/list">Sub Category</NavLink>
                                         )}
                                     </>
                                 </Accordion.Collapse>

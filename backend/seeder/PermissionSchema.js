@@ -45,6 +45,7 @@ module.exports={
                 { name: 'Permission Management',isActive:true },
                 { name: 'User Management',isActive:true },
                 { name: 'Customer Management',isActive:true },
+                { name: 'Main Category Management',isActive:true },
                 { name: 'Category Management',isActive:true },
                 { name: 'Sub Category Management',isActive:true },
                 { name: 'Products Management',isActive:true },

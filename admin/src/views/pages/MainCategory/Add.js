@@ -1,38 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import TextErrorMsg from "../../Components/InputText/TextErrorMsg";
 import { Button } from "../../Components/Button/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { addCategoryAction } from "../../../features/categorySlice";
-import { activeMainCategoryListAction } from "../../../features/mainCategorySlice";
-
+import { useDispatch } from "react-redux";
+import { addMainCategoryAction } from "../../../features/mainCategorySlice";
 
 const CategoriesAdd = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loader, setLoader] = useState(false);
-    const { activeMainCategoryList } = useSelector((state) => state.mainCategory);
 
-
-    useEffect(() => {
-        dispatch(activeMainCategoryListAction());
-    }, [dispatch])
     return (
         <div className="addLeagueBlock">
             <div className="title_breadcrumb_section">
-                <div className="title_page">Add New Categories</div>
+                <div className="title_page">Add New Main Categories</div>
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item">
                             <Link to="/admin/dashboard">Home</Link>
                         </li>
                         <li className="breadcrumb-item">
-                            <Link to="/admin/categories/list">Categories list</Link>
+                            <Link to="/admin/categories/list">Main Categories</Link>
                         </li>
                         <li className="breadcrumb-item active" aria-current="page">
-                            Add Categories
+                            Add Main Categories
                         </li>
                     </ol>
                 </nav>
@@ -42,24 +35,21 @@ const CategoriesAdd = () => {
                     <div className="formAddBlock">
                         <Formik
                             initialValues={{
-                                name: "",
-                                main_categories_id: ""
+                                name: ""
+                                
                             }}
                             validationSchema={Yup.object().shape({
                                 name: Yup.string().required("Name is required"),
-                                main_categories_id: Yup.string().required("Select Main Categories is required"),
                             })}
-
                             onSubmit={async (values) => {
                                 const payload = {
                                     name: values.name,
-                                    parent_id: values?.main_categories_id,
                                     isActive: true,
                                 };
                                 setLoader(true);
-                                await dispatch(addCategoryAction(payload, (response) => {
+                                await dispatch(addMainCategoryAction(payload, (response) => {
                                     if (response?.status === true) {
-                                        navigate("/admin/categories/list");
+                                        navigate("/admin/main-categories/list");
                                     } else {
                                         console.error("Failed to add categories:", response?.message);
                                     }
@@ -70,26 +60,7 @@ const CategoriesAdd = () => {
                             {(formik) => (
                                 <Form>
                                     <div className="row g-3 g-md-5">
-                                        <div className="col-12 col-md-6 ">
-                                            <label htmlFor="main_categories_id" className="md-4" style={{ marginBottom: '10px' }}>
-                                                Select Main Category
-                                            </label>
-                                            <Field
-                                                as="select"
-                                                id="main_categories_id"
-                                                name="main_categories_id"
-                                                className="form-control select_white"
-                                            >
-                                                <option value="">Select Main Category</option>
-                                                {activeMainCategoryList?.map((item) => (
-                                                    <option key={item._id} value={item._id}>
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </Field>
-                                            <ErrorMessage name="main_categories_id" component={TextErrorMsg} />
-                                        </div>
-                                        <div className="col-12 col-md-6">
+                                        <div className="col-12">
                                             <label>Name</label>
                                             <Field
                                                 name="name"

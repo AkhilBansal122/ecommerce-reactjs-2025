@@ -1,10 +1,7 @@
 const Joi = require('joi');
-const mongoose = require("mongoose");
-
 const validationRequest = require('../../../middleware/validationRequest');
-const { alreadyExistsResponse } = require('../../../Helper/helper');
 module.exports = {
-    createSubCategoryValidation: async (req, res, next) => {
+    createMainCategoryValidation: async (req, res, next) => {
         // Define the validation schema using Joi
         const schema = Joi.object({
             name: Joi.string()
@@ -14,24 +11,11 @@ module.exports = {
                     'string.min': 'Name must be at least 3 characters long.',
                     'any.required': 'Name is required.',
                 }),
-                parent_id: Joi.string()
-                .custom((value, helpers) => {
-                  // Validate the role_id as a valid MongoDB ObjectId
-                  if (!mongoose.Types.ObjectId.isValid(value)) {
-                    return helpers.message('Category ID must be a valid MongoDB ObjectId.');
-                  }
-                  return value; // Valid ObjectId, return it
-                })
-                .required()
-                .messages({
-                  'any.required': 'Category ID is required.',
-                }),
         });
- 
     
         validationRequest(req, res, next, schema);
     },
-    updateSubCategoryValidation: async (req, res, next) => {
+    updateMainCategoryValidation: async (req, res, next) => {
         // Define the validation schema using Joi
         const schema = Joi.object({
             id: Joi.string()
@@ -50,24 +34,26 @@ module.exports = {
                     'string.min': 'Name must be at least 3 characters long.',
                     'any.required': 'Name is required.',
                 }),
-                parent_id: Joi.string()
-                .custom((value, helpers) => {
-                  // Validate the role_id as a valid MongoDB ObjectId
-                  if (!mongoose.Types.ObjectId.isValid(value)) {
-                    return helpers.message('Category ID must be a valid MongoDB ObjectId.');
-                  }
-                  return value; // Valid ObjectId, return it
-                })
-                .required()
-                .messages({
-                  'any.required': 'Category ID is required.',
-                }),
         });
     
         validationRequest(req, res, next, schema);
     },
-
-    listSubCategoryValidation:async (req, res, next) => {
+    deleteMainCategorynValidation: async (req, res, next) => {
+        // Define the validation schema using Joi
+        const schema = Joi.object({
+            id: Joi.string()
+                .length(24) // Ensures the id is exactly 24 characters long (for MongoDB ObjectId)
+                .hex() // Ensures the id contains only hexadecimal characters
+                .required()
+                .messages({
+                    'string.length': 'ID must be a 24-character long string.',
+                    'string.hex': 'ID must be a valid hexadecimal string.',
+                    'any.required': 'ID is required.',
+                }),
+        });
+        validationRequest(req, res, next, schema);
+    },
+    listMainCategoryValidation:async (req, res, next) => {
         // Define the validation schema using Joi
         const schema = Joi.object({
             page: Joi.number()
@@ -91,7 +77,7 @@ module.exports = {
     
         validationRequest(req, res, next, schema);
     },
-    statusChangeSubCategoryValidation: async (req, res, next) => {
+    statusMainChangeCategoryValidation: async (req, res, next) => {
         // Define the validation schema using Joi
         const schema = Joi.object({
             id: Joi.string()

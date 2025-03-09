@@ -41,7 +41,7 @@ const ChangePassword = () => {
                         })}
                         onSubmit={(value) => {
                             setLoader(true)
-                            ChangePasswordAction(value, (response) => {
+                            ChangePasswordAction({currentPassword:value.current_password,newPassword:value?.password,confirmPassword:value?.confirm_password}, (response) => {
                                 if (response?.status === true) {
                                     navigate("/login")
                                 }
@@ -53,19 +53,25 @@ const ChangePassword = () => {
                             return (
                                 <Form autoComplete='off'>
                                     <div className="row g-md-5 g-3">
-                                        <div className="col-md-4 col-12">
-                                            <div className='show_password_tag change_password'>
-                                                <FieldText
-                                                    name="current_password"
-                                                    type="password"
-                                                    showHide={true}
-                                                    placeholder="Current Password"
-                                                />
-                                            </div>
-                                        </div>
+                                                          <div className="col-md-4 col-12">
+                                                            <div className='show_password_tag change_password'>
+                                                              <FieldText
+                                                                showlabel={true}
+                                                                label="Current Password"
+                                                                name="current_password"
+                                                                type="password"
+                                                                showHide={true}
+                                                                placeholder="Enter Current Password"
+                                                              />
+                                                            </div>
+                                                          </div>
+                                       
                                         <div className="col-12 col-md-4">
                                             <div className='show_password_tag change_password'>
                                                 <FieldText
+                                                                                                                showlabel={true}
+                                                                                                                label="Password"
+                                                
                                                     name="password"
                                                     type="password"
                                                     showHide={true}
@@ -76,6 +82,8 @@ const ChangePassword = () => {
                                         <div className="col-12 col-md-4">
                                             <div className='show_password_tag change_password'>
                                                 <FieldText
+                                                 showlabel={true}
+                                                                                                                label="Confirm Password"
                                                     name="confirm_password"
                                                     type="password"
                                                     showHide={true}

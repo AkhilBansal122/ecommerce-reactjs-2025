@@ -58,10 +58,13 @@ const subAdminSlice = createSlice({
             state.loading = action.payload.loading;
             state.cityList = action.payload.data;
          },
+         resetSubAdminAction(){
+            return initialState;
+         }
     }
 });
 export default subAdminSlice.reducer;
-export const { fetchDataLoading, fetchApiFailure, fetchSubadminListSuccess, setPage, setPageSize,fetchActiveRoleSuccess,fetchActiveCountrySuccess,fetchActiveCitySuccess,fetchActiveStateSuccess } = subAdminSlice.actions;
+export const { fetchDataLoading, fetchApiFailure, fetchSubadminListSuccess, setPage, setPageSize,fetchActiveRoleSuccess,fetchActiveCountrySuccess,fetchActiveCitySuccess,fetchActiveStateSuccess,resetSubAdminAction } = subAdminSlice.actions;
 
 export const addSubAdminAction = (value, callBack) => async (dispatch) => {
     try {

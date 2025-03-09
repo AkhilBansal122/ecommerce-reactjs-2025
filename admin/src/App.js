@@ -52,10 +52,17 @@ import SubAdminList from './views/pages/SubAdmin/List';
 import SubAdminAdd from './views/pages/SubAdmin/Add';
 import SubAdminEdit from './views/pages/SubAdmin/Edit';
 
+import MainCategoriesList from './views/pages/MainCategory/List';
+import MainCategoriesAdd from "./views/pages/MainCategory/Add";
+import MainCategoriesEdit from "./views/pages/MainCategory/Edit";
+
 import CategoriesList from './views/pages/Category/List';
 import CategoriesAdd from "./views/pages/Category/Add";
 import CategoriesEdit from "./views/pages/Category/Edit";
 
+import SubCategoriesList from './views/pages/SubCategory/List';
+import SubCategoriesAdd from "./views/pages/SubCategory/Add";
+import SubCategoriesEdit from "./views/pages/SubCategory/Edit";
 var CryptoJS = require("crypto-js");
 
 
@@ -85,21 +92,30 @@ function App() {
                 <Route element={<PrivateRoutes />}>
                     <Route path='admin' element={<TheLayout />}>
                         <Route path='dashboard' index element={<Dashboard />} />
-                        
+
                         {/* Role Permission MAnagement*/}
-                        <Route path="role/list" index element={<RoleList/>}/>
-                        <Route path="role/add" index element={<RoleAdd/>}/>
-                        <Route path="role/edit/:id" index element={<RoleEdit/>}/>
-                     
-                        <Route path="permission/add" index element={<PermissionAdd/>}/>
-                        <Route path="permission/list" index element={<PermissionList/>}/>
-                        <Route path="permissions/edit/:id" index element={<PermissionEdit/>}/>
-                      
+                        <Route path="role/list" index element={<RoleList />} />
+                        <Route path="role/add" index element={<RoleAdd />} />
+                        <Route path="role/edit/:id" index element={<RoleEdit />} />
+
+                        <Route path="permission/add" index element={<PermissionAdd />} />
+                        <Route path="permission/list" index element={<PermissionList />} />
+                        <Route path="permissions/edit/:id" index element={<PermissionEdit />} />
+
+                        {/*Main Categories MAnagement*/}
+                        <Route path="main-categories/list" index element={<MainCategoriesList />} />
+                        <Route path="main-categories/add" index element={<MainCategoriesAdd />} />
+                        <Route path="main-categories/edit/:id" index element={<MainCategoriesEdit />} />
+
                         {/* Categories MAnagement*/}
-                        <Route path="categories/list" index element={<CategoriesList/>}/>
-                        <Route path="categories/add" index element={<CategoriesAdd/>}/>
-                        <Route path="categories/edit/:id" index element={<CategoriesEdit/>}/>
-                     
+                        <Route path="categories/list" index element={<CategoriesList />} />
+                        <Route path="categories/add" index element={<CategoriesAdd />} />
+                        <Route path="categories/edit/:id" index element={<CategoriesEdit />} />
+
+                        {/*  Sub Categories MAnagement*/}
+                        <Route path="sub-categories/list" index element={<SubCategoriesList />} />
+                        <Route path="sub-categories/add" index element={<SubCategoriesAdd />} />
+                        <Route path="sub-categories/edit/:id" index element={<SubCategoriesEdit />} />
 
                         {/* SubAdmin Management */}
                         <Route path='user/list' index element={<SubAdminList />} />
@@ -112,7 +128,7 @@ function App() {
                         <Route path='user/detail/:id' index element={<UsersDetails />} />
                         <Route path='user/view/:id' index element={<UserEdit />} />
 
-                  
+
 
                         {/* CMS Management */}
                         <Route path='content-management-system/list' index element={<CMSList />} />
@@ -128,14 +144,14 @@ function App() {
                         <Route path='notifications-received' index element={<NotificationsReceived />} />
                         <Route path='contact-us-list' index element={<ContactUsList />} />
 
-                    
-                        <Route path='privacy-policy/list' index element={<PrivacyPolicyList />} />           
+
+                        <Route path='privacy-policy/list' index element={<PrivacyPolicyList />} />
                         <Route path='term-condition' index element={<TermsConditions />} />
                         <Route path="faq/list" index element={<Faqs />} />
                         <Route path="faq/add/:id" index element={<FaqAdd />} />
                         <Route path="faq/QueAns/list/:id" index element={<FaqQueAns />} />
                         <Route path="faq/QueAns/edit/:id" index element={<FaqQueAnsEdit />} />
-                     
+
                     </Route>
                 </Route>
             </Routes>

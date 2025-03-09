@@ -14,27 +14,27 @@ import {
 import { BiPlus } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "../../Components/Hooks/Pagination";
-import { categoriesListAction, setPage, setPageSize, categoriesStatusUpdateAction, deleteCategoryAction } from "../../../features/categorySlice";
-import DeleteModal from "../../Components/Modal/DeleteModal";
-import CommonModal from "../../Components/Modal/CommonModal";
+
+import { subCategoryListAction, subcategoriesStatusUpdateAction, setPage, setPageSize, deleteSubCategoryAction } from "../../../features/subCategorySlice";
 import { BsTrashFill } from "react-icons/bs";
+import CommonModal from "../../Components/Modal/CommonModal";
+import DeleteModal from "../../Components/Modal/DeleteModal";
 
 
-const CategoriesList = () => {
+const SubCategoriesList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [statusUpdate, setStatusUpdate] = useState(1);
   const [headerLength, setHeaderLength] = useState(0);
 
-  const { caotegorylist, currentPage, pageSize, loading, totalItems } = useSelector((state) => state.categories);
-
+  const { subcategoryList, currentPage, pageSize, loading, totalItems } = useSelector((state) => state.subCategory);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectRecord, setSelectRecord] = useState(null);
-
   const tableHeader = [
     { label: "SN", key: "", sort: false },
-    { label: "Main Category", key: "", sort: false },
+    { label: "Main Category Name", key: "", sort: false },
+    { label: "Category Name", key: "", sort: false },
     { label: "Name", key: "", sort: false },
     { label: "Status", key: "", sort: false },
     { label: "Action", key: "", sort: false },
@@ -43,13 +43,12 @@ const CategoriesList = () => {
   useEffect(() => {
     setHeaderLength(tableHeader.length);
   }, [tableHeader]);
-
   const CategoriesListing = async () => {
     let payload = {
       page: currentPage, //(currentPage - 1) * pageSize,
       limit: pageSize
     };
-    await dispatch(categoriesListAction(payload));
+    await dispatch(subCategoryListAction(payload));
   };
   useEffect(() => {
     CategoriesListing();
@@ -59,7 +58,7 @@ const CategoriesList = () => {
     const newStatus = currentStatus === true ? false : true;
 
     // Use dispatch to call the async action
-    await dispatch(categoriesStatusUpdateAction({ id, isActive: newStatus }, (response) => {
+    await dispatch(subcategoriesStatusUpdateAction({ id, isActive: newStatus }, (response) => {
       if (response?.status === true) {
         setStatusUpdate((prev) => prev + 1);
         ToastOverSuccess("Status updated successfully.");
@@ -68,35 +67,35 @@ const CategoriesList = () => {
       }
     }));
   };
-  const categoriesDeleteModal = (id) => {
+  const subCategoriesDeleteModal = (id) => {
     setSelectRecord(id);
     setDeleteModalOpen(true);
   };
-  const submitDeleteMainCategory = () => {
-    if (!selectRecord) return;
-    dispatch(deleteCategoryAction({ id: selectRecord }, (response) => {
-      if (response?.status === true) {
-        ToastOverSuccess(response.message);
-        CategoriesListing();
-        setDeleteModalOpen(false);
-      } else {
-        ToastOverError(response?.message || "Failed to delete Main Category.");
-      }
-    }));
-
-  };
+    const submitDeleteMainCategory = () => {
+      if (!selectRecord) return;
+      dispatch(deleteSubCategoryAction({ id: selectRecord }, (response) => {
+        if (response?.status === true) {
+          ToastOverSuccess(response.message);
+          CategoriesListing();
+          setDeleteModalOpen(false);
+        } else {
+          ToastOverError(response?.message || "Failed to delete Main Category.");
+        }
+      }));
+  
+    };
   return (
     <>
       <section className="mainSection">
         <div className="title_breadcrumb_section">
-          <div className="title_page">Categories Manager</div>
+          <div className="title_page">Sub Categories Manager</div>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
                 <Link to="/admin/dashboard">Home</Link>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                Categories Manager
+                Sub Categories Manager
               </li>
             </ol>
           </nav>
@@ -111,7 +110,7 @@ const CategoriesList = () => {
               <button
                 className="themeBtn_create"
                 type="button"
-                onClick={() => navigate(`/admin/categories/add`)}
+                onClick={() => navigate(`/admin/sub-categories/add`)}
               >
                 <BiPlus /> Create
               </button>
@@ -131,14 +130,15 @@ const CategoriesList = () => {
               ) : (
                 // When not loading, check if data exists
                 <>
-                  {caotegorylist?.length > 0 ? (
+                  {subcategoryList?.length > 0 ? (
                     // Render the data rows
-                    caotegorylist.map((value, index) => (
+                    subcategoryList.map((value, index) => (
                       <tr key={index}>
                         <td>
                           {(currentPage - 1) * Number(pageSize) + (index + 1)}
                         </td>
-                        <td>{value?.parentMainCategory?.name}</td>
+                        <td>{value?.parent_id?.parent_id?.name}</td>
+                        <td>{value?.parent_id?.name}</td>
                         <td>{value?.name}</td>
                         <td>
                           <button
@@ -154,20 +154,20 @@ const CategoriesList = () => {
                             <button
                               type="button"
                               onClick={() =>
-                                navigate(`/admin/categories/edit/${value._id}`, {
+                                navigate(`/admin/sub-categories/edit/${value._id}`, {
                                   state: { ...value },
                                 })
                               }
                             >
                               <MdModeEditOutline />
                             </button>
-                            <button
-                              type="button"
-                              onClick={() => categoriesDeleteModal(value._id)}
-                            >
-                              <BsTrashFill />
-                            </button>
-
+                                <button
+                                                          type="button"
+                                                          onClick={() => subCategoriesDeleteModal(value._id)}
+                                                        >
+                                                          <BsTrashFill />
+                                                        </button>
+                            
                           </div>
                         </td>
                       </tr>
@@ -184,7 +184,7 @@ const CategoriesList = () => {
               )}
             </tbody>
           </Table>
-          {caotegorylist?.length > 0 ? (
+          {subcategoryList?.length > 0 ? (
             <div className="pagination_entries_section">
               <div className="entries_text">
                 <select
@@ -225,4 +225,4 @@ const CategoriesList = () => {
   );
 };
 
-export default CategoriesList;
+export default SubCategoriesList;
