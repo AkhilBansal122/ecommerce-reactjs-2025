@@ -5,59 +5,57 @@ import { ToastOverError, ToastOverSuccess } from "../common/Toast/ToastOver";
 import HandleError from "../common/Apis/HandleError";
 
 const initialState = {
-    attributelist: [],  // List of role for the current page
+    attributeValuelist: [],  // List of role for the current page
     currentPage: 1,      // Current page number
     totalPages: 1,       // Total number of pages
     pageSize: 10,        // Number of items per page
     totalItems: 0,       // Total number of items
     loading: false,      // Loading state for data fetch
     error: null,         // Error message
-    activeAttributeList: [],
-    
+    activeAttributeValueList: [],
 };
-const attributeSlice = createSlice({
-    name: "attribute",
+const attributeValueSlice = createSlice({
+    name:"attributeValue",
     initialState,
-    reducers: {
+    reducers:{
         fetchDataLoading(state) {
-            state.loading = true;
-        },
-        fetchApiFailure(state, action) {
-            state.loading = false;
-            state.error = action.payload;
-        },
-        fetchattributelistSuccess(state, action) {
-            state.loading = action.payload.loading;
-            state.attributelist = action.payload.attributelist;
-            state.currentPage = action.payload.currentPage;
-            state.totalPages = action.payload.totalPages;
-            state.pageSize = action.payload.pageSize;
-            state.totalItems = action.payload.totalItems;
-        },
-        setPage(state, action) {
-            state.currentPage = action.payload; // Update the current page number
-        },
-        setPageSize(state, action) {
-            state.pageSize = action.payload; // Update the page size
-        },
-        fetchActiveAttributeListSuccess(state, action) {
-            state.loading = action.payload.loading;
-            state.activeAttributeList = action.payload.data;
-        },
-          // New action to reset the category list
-          resetAttributeListAction() {
-            return initialState;
-        },
+                   state.loading = true;
+               },
+               fetchApiFailure(state, action) {
+                   state.loading = false;
+                   state.error = action.payload;
+               },
+               fetchattributeValuelistSuccess(state, action) {
+                   state.loading = action.payload.loading;
+                   state.attributeValuelist = action.payload.data;
+                   state.currentPage = action.payload.currentPage;
+                   state.totalPages = action.payload.totalPages;
+                   state.pageSize = action.payload.pageSize;
+                   state.totalItems = action.payload.totalItems;
+               },
+               setPage(state, action) {
+                   state.currentPage = action.payload; // Update the current page number
+               },
+               setPageSize(state, action) {
+                   state.pageSize = action.payload; // Update the page size
+               },
+               fetchActiveAttributeValueListSuccess(state, action) {
+                   state.loading = action.payload.loading;
+                   state.activeAttributeValueList = action.payload.data;
+               },
+                 // New action to reset the category list
+                 resetAttributeValueListAction() {
+                   return initialState;
+               },
     }
 });
-export default attributeSlice.reducer;
+export default attributeValueSlice.reducer;
+export const {fetchDataLoading,fetchApiFailure,fetchActiveAttributeValueListSuccess,fetchattributeValuelistSuccess,setPage,setPageSize,resetAttributeValueListAction} = attributeValueSlice.actions;
 
-export const { fetchDataLoading, fetchApiFailure, fetchcaotegorylistSuccess,fetchActiveAttributeListSuccess, setPage, setPageSize,resetCategoryList,fetchattributelistSuccess,resetAttributeListAction } = attributeSlice.actions;
-
-export const addAttributeAction = (value, callBack) => async (dispatch) => {
+export const addAttributeValueAction = (value, callBack) => async (dispatch) => {
     try {
         // Make API request
-        const { data } = await axiosBaseURL.post(`${ApiUrl}/attribute-create`, value, {
+        const { data } = await axiosBaseURL.post(`${ApiUrl}/attribute-value-create`, value, {
             headers: authHeader(),
         });
 
@@ -80,9 +78,9 @@ export const addAttributeAction = (value, callBack) => async (dispatch) => {
     }
 };
 
-export const updateAttributeesAction = (value, callBack) => async () => {
+export const updateAttributeeValuesAction = (value, callBack) => async () => {
     try {
-        const data = await axiosBaseURL.put(`${ApiUrl}/attribute-update`, value, {
+        const data = await axiosBaseURL.put(`${ApiUrl}/attribute-value-update`, value, {
             headers: authHeader(),
         });
         callBack(data?.data)
@@ -98,9 +96,9 @@ export const updateAttributeesAction = (value, callBack) => async () => {
         HandleError(error?.response?.data)
     }
 };
-export const attributeesStatusUpdateAction = (value, callBack) => async (dispatch) => {
+export const attributeesValueStatusUpdateAction = (value, callBack) => async (dispatch) => {
     try {
-        const data = await axiosBaseURL.put(`${ApiUrl}/attribute-statusChange`, value, {
+        const data = await axiosBaseURL.put(`${ApiUrl}/attribute-value-statusChange`, value, {
             headers: authHeader(),
         });
         callBack(data?.data)
@@ -118,13 +116,12 @@ export const attributeesStatusUpdateAction = (value, callBack) => async (dispatc
         HandleError(error?.response?.data)
     }
 };
-// Action to fetch paginated role list
-export const attributeesListAction = (payload) => async (dispatch) => {
+export const attributeeValueListAction = (payload) => async (dispatch) => {
     try {
 
         dispatch(fetchDataLoading());
         // Request paginated data from the API
-        const { data } = await axiosBaseURL.post(`${ApiUrl}/attribute-list`, {
+        const { data } = await axiosBaseURL.post(`${ApiUrl}/attribute-value-list`, {
             page: payload.page,          // Pass page number to the API
             limit: payload.limit      // Pass page size to the API
         }, {
@@ -135,9 +132,9 @@ export const attributeesListAction = (payload) => async (dispatch) => {
             ToastOverError(data?.message);
         } else {
             // Dispatch success and update the state with the pagination data
-            dispatch(fetchattributelistSuccess({
+            dispatch(fetchattributeValuelistSuccess({
                 loading: false,
-                attributelist: data?.data,    // Array of role for the current page
+                data: data?.data,    // Array of role for the current page
                 currentPage: data?.pagination?.page,    // Current page number from API response
                 totalPages: data?.pagination?.totalPages,      // Total pages calculated by the API
                 pageSize: data?.pagination?.limit,                        // Page size (number of items per page)
@@ -150,19 +147,19 @@ export const attributeesListAction = (payload) => async (dispatch) => {
         HandleError(error?.response?.data);
     }
 };
-export const activeAttributeListAction = () => async (dispatch) => {
+export const activeAttributeValueListAction = () => async (dispatch) => {
     try {
         dispatch(fetchDataLoading()); // Set loading to true before the API request
 
         // Request active permission list data from the API
-        const { data } = await axiosBaseURL.get(`${ApiUrl}/active-attribute`, {
+        const { data } = await axiosBaseURL.get(`${ApiUrl}/active-attribute-value`, {
             headers: authHeader(),
         });
         if (data.status === false) {
             ToastOverError(data?.message);
         } else {
             // Dispatch success and update the state with the active permission list
-            dispatch(fetchActiveAttributeListSuccess({
+            dispatch(fetchActiveAttributeValueListSuccess({
                 loading: true,
                 data: data?.data    // Array of roles from the API response
             }));

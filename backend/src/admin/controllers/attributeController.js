@@ -125,7 +125,6 @@ module.exports = {
     },
     activeAttrubute: async (req, res) => {
         try {
-            const { parent_id } = req.body;
     
             // Calculate skip value for pagination
     

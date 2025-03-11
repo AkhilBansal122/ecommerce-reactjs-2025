@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import TableHead from "../../Components/TableHead/TableHead";
-
 import { Link, useNavigate } from "react-router-dom";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import { MdModeEditOutline } from "react-icons/md";
-
 
 import {
   ToastOverError,
@@ -14,20 +12,22 @@ import {
 import { BiPlus } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "../../Components/Hooks/Pagination";
-import { attributeesListAction, setPage, setPageSize, attributeesStatusUpdateAction } from "../../../features/attributeSlice";
+import { attributeeValueListAction, setPage, setPageSize, attributeesValueStatusUpdateAction } from "../../../features/attributeValueSlice";
 
 
-const AttributeList = () => {
+const AttributeValue = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [statusUpdate, setStatusUpdate] = useState(1);
   const [headerLength, setHeaderLength] = useState(0);
 
-  const { attributelist, currentPage, pageSize, loading, totalItems } = useSelector((state) => state.attribute);
+  const { attributeValuelist, currentPage, pageSize, loading, totalItems } = useSelector((state) => state.attributeValue);
+
 
   const tableHeader = [
     { label: "SN", key: "", sort: false },
+    { label: "Attribute", key: "", sort: false },
     { label: "Name", key: "", sort: false },
     { label: "Status", key: "", sort: false },
     { label: "Action", key: "", sort: false },
@@ -37,23 +37,22 @@ const AttributeList = () => {
     setHeaderLength(tableHeader.length);
   }, [tableHeader]);
 
-  const AttributeListing = async () => {
+  const AttributeValueListing = async () => {
     let payload = {
-      page: currentPage,
+      page: currentPage, //(currentPage - 1) * pageSize,
       limit: pageSize
     };
-    await dispatch(attributeesListAction(payload));
+    await dispatch(attributeeValueListAction(payload));
   };
   useEffect(() => {
-    AttributeListing();
+    AttributeValueListing();
   }, [statusUpdate, dispatch, currentPage, pageSize]);
-
 
   const handleStatusUpdate = async (id, currentStatus) => {
     const newStatus = currentStatus === true ? false : true;
 
     // Use dispatch to call the async action
-    await dispatch(attributeesStatusUpdateAction({ id, isActive: newStatus }, (response) => {
+    await dispatch(attributeesValueStatusUpdateAction({ id, isActive: newStatus }, (response) => {
       if (response?.status === true) {
         setStatusUpdate((prev) => prev + 1);
         ToastOverSuccess("Status updated successfully.");
@@ -66,14 +65,14 @@ const AttributeList = () => {
     <>
       <section className="mainSection">
         <div className="title_breadcrumb_section">
-          <div className="title_page">Attribute Manager</div>
+          <div className="title_page">Attribute Value Manager</div>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
                 <Link to="/admin/dashboard">Home</Link>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                Attribute Manager
+                Attribute Value Manager
               </li>
             </ol>
           </nav>
@@ -88,7 +87,7 @@ const AttributeList = () => {
               <button
                 className="themeBtn_create"
                 type="button"
-                onClick={() => navigate(`/admin/attribute/add`)}
+                onClick={() => navigate(`/admin/attribute-value/add`)}
               >
                 <BiPlus /> Create
               </button>
@@ -108,13 +107,14 @@ const AttributeList = () => {
               ) : (
                 // When not loading, check if data exists
                 <>
-                  {attributelist?.length > 0 ? (
+                  {attributeValuelist?.length > 0 ? (
                     // Render the data rows
-                    attributelist.map((value, index) => (
+                    attributeValuelist.map((value, index) => (
                       <tr key={index}>
                         <td>
                           {(currentPage - 1) * Number(pageSize) + (index + 1)}
                         </td>
+                        <td>{value?.attribute?.name}</td>
                         <td>{value?.name}</td>
                         <td>
                           <button
@@ -130,13 +130,14 @@ const AttributeList = () => {
                             <button
                               type="button"
                               onClick={() =>
-                                navigate(`/admin/attribute/edit/${value._id}`, {
+                                navigate(`/admin/attribute-value/edit/${value._id}`, {
                                   state: { ...value },
                                 })
                               }
                             >
                               <MdModeEditOutline />
                             </button>
+
 
                           </div>
                         </td>
@@ -154,7 +155,7 @@ const AttributeList = () => {
               )}
             </tbody>
           </Table>
-          {attributelist?.length > 0 ? (
+          {attributeValuelist?.length > 0 ? (
             <div className="pagination_entries_section">
               <div className="entries_text">
                 <select
@@ -179,9 +180,8 @@ const AttributeList = () => {
         </div>
       </section>
 
-
     </>
   );
 };
 
-export default AttributeList;
+export default AttributeValue;

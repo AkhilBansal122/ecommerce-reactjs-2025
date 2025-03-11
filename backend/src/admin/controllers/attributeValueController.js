@@ -14,7 +14,7 @@ module.exports = {
             const existingAttributeValue = await AttributeValueModel.findOne({ name: name,attribute_id:attribute_id });
            
             if (existingAttributeValue) {
-                return alreadyExistsResponse(res, "Main AttributeValue already exists.");
+                return alreadyExistsResponse(res, "Attribute Value already exists.");
             }
             slug = await generateSlug(name);
             // Create a new AttributeValue
@@ -103,7 +103,7 @@ module.exports = {
                 .populate({
                     path: 'attribute_id',  // Populate the attribute_id field
                     select: 'name',     // Select only the 'name' field from the AttributeValue model
-                    match: { deletedAt: null } // Ensure the populated parent is not soft-deleted
+                    match: { isActive:true, deletedAt: null } // Ensure the populated parent is not soft-deleted
                 })
                 .sort({ createdAt: -1 }) // Sort by createdAt in descending order (latest first)
                 .skip((page - 1) * limit) // Skip based on the page and limit

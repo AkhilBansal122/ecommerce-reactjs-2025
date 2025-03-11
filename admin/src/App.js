@@ -66,6 +66,11 @@ import SubCategoriesEdit from "./views/pages/SubCategory/Edit";
 import AttributeList from './views/pages/Attribute/List';
 import AttributeAdd from './views/pages/Attribute/Add';
 import AttributeEdit from './views/pages/Attribute/Edit';
+
+import AttributeValueList from './views/pages/AttributeValue/List';
+import AttributeValueAdd from './views/pages/AttributeValue/Add';
+import AttributeValueEdit from './views/pages/AttributeValue/Edit';
+
 var CryptoJS = require("crypto-js");
 
 
@@ -125,6 +130,11 @@ function App() {
                         <Route path="attribute/list" index element={<AttributeList />} />
                         <Route path="attribute/add" index element={<AttributeAdd />} />
                         <Route path="attribute/edit/:id" index element={<AttributeEdit />} />
+                      
+                        {/*Attribute value MAnagement*/}
+                        <Route path="attribute-value/list" index element={<AttributeValueList />} />
+                        <Route path="attribute-value/add" index element={<AttributeValueAdd />} />
+                        <Route path="attribute-value/edit/:id" index element={<AttributeValueEdit />} />
                       
                         {/* SubAdmin Management */}
                         <Route path='user/list' index element={<SubAdminList />} />
